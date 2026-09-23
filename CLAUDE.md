@@ -22,5 +22,7 @@ Arquivo principal: `Racha dos Amigos.dc.html` (um único DC com todas as página
 - Partida (`racha_partida_v1`): phase setup/live/paused/ended/done; startTs, pausedAt, pausedMs, endTs (cronômetro recalculado por timestamps); rule tempogols/tempo/gols/livre + minutos (1–60) + golsMax (1–3), endReason tempo|gols; apito via WebAudio (whistle()) ao acabar; events [{id,type goal|yellow|red|foul|start|pause|resume|end, team, player(id), assist, ms}]; rosters; pos (posições arrastadas, chave L/R+id); histId.
 - Histórico (`racha_partidas_hist_v1`): snapshot completo da partida (events, rosters, durMs, a/b). Eventos editáveis também no histórico.
 - Config (`racha_config_v1`): uniforme e logo por time. Backup exportar/importar JSON.
+- Banco online: Firebase Realtime Database via REST + EventSource (sem SDK). URL lida de `racha-config.json` ({firebaseUrl}) no GitHub Pages, senão localStorage `racha_cloud_url`. Chaves SYNC guardadas como string JSON em /racha/<key>. Senha admin (hash SHA-256) em `racha_admin_v1`; sem senha todos editam; com senha, visitantes só visualizam (write() bloqueia). Só admin roda checkEnd; visitantes ouvem apito ao receber phase 'ended'.
+- Publicação: `index.html` = bundle (super_inline_html) de `Racha dos Amigos.dc.html`; subir index.html + racha-config.json na raiz do repo `superracha` (GitHub Pages).
 - Ranking: real, derivado do histórico (V=3, E=1).
 - Início: Próximo racha e Confirmados ainda demonstrativos; Partida atual e Placar ao vivo.

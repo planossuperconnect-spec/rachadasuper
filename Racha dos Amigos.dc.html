@@ -34,6 +34,9 @@ input::placeholder{color:#5f6e67}
           <a href="#" onClick="{{ n.go }}" style="padding:8px 14px;border-radius:8px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:15px;white-space:nowrap" style-hover="color:#eef2ef;background:{{ n.hoverBg }}">{{ n.label }}</a>
         </sc-for>
       </nav>
+      <sc-if value="{{ cloudOn }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ openAdmin }}" style="display:flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border-radius:999px;border:1px solid {{ pillBorder }};background:#0f1412;color:{{ pillFg }};font-family:'Barlow',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap;flex-shrink:0"><span style="width:7px;height:7px;border-radius:50%;background:{{ pillDot }}"></span>{{ pillLabel }}</button>
+      </sc-if>
     </div>
   </header>
 
@@ -650,6 +653,32 @@ input::placeholder{color:#5f6e67}
       </sc-for>
     </div>
     <section style="background:#161d1a;border:1px solid #223029;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="color:#a3b0aa;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Banco online (dados compartilhados)</span>
+        <span style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:{{ pillFg }}"><span style="width:8px;height:8px;border-radius:50%;background:{{ pillDot }}"></span>{{ cloudStatus }}</span>
+      </div>
+      <span style="color:#a3b0aa;font-size:14px;line-height:1.5">{{ cloudHelp }}</span>
+      <sc-if value="{{ cloudFromFile }}" hint-placeholder-val="{{ false }}">
+        <span style="color:#8fa39a;font-size:13px;word-break:break-all">Endereço definido em racha-config.json: {{ cloudUrl }}</span>
+      </sc-if>
+      <sc-if value="{{ cloudEditable }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input value="{{ cloudInput }}" onChange="{{ onCloudInput }}" placeholder="https://seu-projeto-default-rtdb.firebaseio.com" style="min-height:46px;padding:0 14px;border-radius:10px;border:1px solid #2a3a32;background:#0f1412;color:#eef2ef;font-family:'Barlow',sans-serif;font-size:16px;outline:none;flex:1 1 260px;min-width:0" style-focus="border-color:#22c55e">
+          <button onClick="{{ saveCloud }}" style="min-height:44px;padding:0 18px;border-radius:10px;border:none;font-family:'Barlow',sans-serif;cursor:pointer;background:#22c55e;color:#0b120e;font-weight:700;font-size:15px">Conectar</button>
+          <sc-if value="{{ cloudOn }}"><button onClick="{{ clearCloud }}" style="min-height:44px;padding:0 18px;border-radius:10px;border:1px solid #2a3a32;background:none;color:#eef2ef;font-family:'Barlow',sans-serif;font-weight:600;font-size:15px;cursor:pointer">Desconectar</button></sc-if>
+        </div>
+      </sc-if>
+      <sc-if value="{{ showPinSetup }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #223029;padding-top:14px">
+          <span style="color:#a3b0aa;font-size:13px;font-weight:600">{{ pinSetupLabel }}</span>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <input type="password" inputmode="numeric" value="{{ newPin }}" onChange="{{ onNewPin }}" placeholder="Nova senha (mín. 4 dígitos)" style="min-height:46px;padding:0 14px;border-radius:10px;border:1px solid #2a3a32;background:#0f1412;color:#eef2ef;font-family:'Barlow',sans-serif;font-size:16px;outline:none;flex:1 1 200px;min-width:0" style-focus="border-color:#22c55e">
+            <button onClick="{{ savePin }}" style="min-height:44px;padding:0 18px;border-radius:10px;border:none;font-family:'Barlow',sans-serif;cursor:pointer;background:#22c55e;color:#0b120e;font-weight:700;font-size:15px">Salvar senha</button>
+          </div>
+        </div>
+      </sc-if>
+    </section>
+    <section style="background:#161d1a;border:1px solid #223029;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px">
       <span style="color:#a3b0aa;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Backup dos dados</span>
       <span style="color:#a3b0aa;font-size:14px;line-height:1.5">Os dados ficam salvos neste navegador. Exporte um backup para guardar ou levar para outro aparelho.</span>
       <div style="display:flex;flex-wrap:wrap;gap:8px">
@@ -888,6 +917,28 @@ input::placeholder{color:#5f6e67}
 
   {{ endOverlay }}
 
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:120;max-width:calc(100vw - 32px);background:#2a1f0b;border:1px solid #7a5a14;color:#fde68a;padding:12px 16px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,0.5)">{{ toast }}</div>
+  </sc-if>
+
+  <sc-if value="{{ adminOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeAdmin }}" style="position:fixed;inset:0;z-index:90;background:rgba(5,8,7,0.78);display:flex;align-items:center;justify-content:center;padding:16px">
+      <div onClick="{{ stop }}" style="width:100%;max-width:400px;background:#161d1a;border:1px solid #26352d;border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:16px">
+        <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:26px;text-transform:uppercase">{{ adminTitle }}</h2>
+        <span style="color:#a3b0aa;font-size:14px;line-height:1.5">{{ adminText }}</span>
+        <sc-if value="{{ adminAsk }}" hint-placeholder-val="{{ true }}">
+          <input type="password" inputmode="numeric" value="{{ pinInput }}" onChange="{{ onPin }}" placeholder="Senha de admin" style="min-height:46px;padding:0 14px;border-radius:10px;border:1px solid #2a3a32;background:#0f1412;color:#eef2ef;font-family:'Barlow',sans-serif;font-size:16px;outline:none" style-focus="border-color:#22c55e">
+          <sc-if value="{{ hasPinErr }}"><span style="color:#f08080;font-size:14px">{{ pinErr }}</span></sc-if>
+        </sc-if>
+        <div style="display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap">
+          <button onClick="{{ closeAdmin }}" style="min-height:44px;padding:0 18px;border-radius:10px;border:1px solid #2a3a32;background:none;color:#eef2ef;font-family:'Barlow',sans-serif;font-weight:600;font-size:15px;cursor:pointer">Fechar</button>
+          <sc-if value="{{ adminAsk }}" hint-placeholder-val="{{ true }}"><button onClick="{{ doLogin }}" style="min-height:44px;padding:0 18px;border-radius:10px;border:none;font-family:'Barlow',sans-serif;cursor:pointer;background:#22c55e;color:#0b120e;font-weight:700;font-size:15px">Entrar</button></sc-if>
+          <sc-if value="{{ adminIn }}" hint-placeholder-val="{{ false }}"><button onClick="{{ doLogout }}" style="min-height:44px;padding:0 18px;border-radius:10px;border:1px solid #2a3a32;background:none;color:#eef2ef;font-family:'Barlow',sans-serif;font-weight:600;font-size:15px;cursor:pointer">Sair do modo admin</button></sc-if>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
   <sc-if value="{{ importOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closeImport }}" style="position:fixed;inset:0;z-index:50;background:rgba(5,8,7,0.75);display:flex;align-items:center;justify-content:center;padding:16px">
       <div onClick="{{ stop }}" style="width:100%;max-width:640px;max-height:calc(100vh - 32px);overflow-y:auto;background:#161d1a;border:1px solid #26352d;border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:18px">
@@ -1079,7 +1130,127 @@ class Component extends DCLogic {
   state = this.initState();
 
   read(key, def) { try { const s = localStorage.getItem(key); if (s) return JSON.parse(s); } catch (e) {} return def; }
-  write(key, v) { try { localStorage.setItem(key, JSON.stringify(v)); } catch (e) { console.warn('Falha ao salvar', key, e); } }
+  static ADMKEY = 'racha_admin_v1';
+  static CLOUD_URL = '';
+  static SYNC = ['racha_jogadores_v2', 'racha_presenca_v1', 'racha_times_v1', 'racha_partida_v1', 'racha_partidas_hist_v1', 'racha_config_v1', 'racha_coletes_v1', 'racha_admin_v1'];
+  write(key, v) {
+    const str = JSON.stringify(v);
+    if (this.cloudActive() && Component.SYNC.includes(key) && !this.isAdmin()) { this.denyEdit(); return; }
+    try { localStorage.setItem(key, str); } catch (e) { console.warn('Falha ao salvar', key, e); }
+    if (this.cloudActive() && Component.SYNC.includes(key)) this.push(key);
+  }
+  // ---------- banco online (Firebase Realtime Database via REST)
+  cloudActive() { return !!this._cloudUrl; }
+  pinHash() { try { const a = JSON.parse(localStorage.getItem(Component.ADMKEY) || 'null'); return a && a.h ? a.h : ''; } catch (e) { return ''; } }
+  isAdmin() { const ph = this.pinHash(); if (!ph) return true; try { return localStorage.getItem('racha_admin_ok') === ph; } catch (e) { return false; } }
+  async sha(s) {
+    try { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('superracha:' + s)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); }
+    catch (e) { let x = 0; for (const c of 'superracha:' + s) x = (x * 31 + c.charCodeAt(0)) | 0; return 'h' + x; }
+  }
+  denyEdit() {
+    this.reloadData();
+    this.setState({ toast: '🔒 Modo visualização: toque em "Visualização" no topo e entre com a senha de admin para alterar.' });
+    clearTimeout(this._tt); this._tt = setTimeout(() => this.setState({ toast: '' }), 3500);
+  }
+  reloadData() {
+    const s = this.initState();
+    this.setState({ players: s.players, presenca: s.presenca, match: s.match, hist: s.hist, gen: s.gen, cfg: s.cfg, coletes: s.coletes });
+  }
+  normUrl(u) { u = String(u || '').trim().replace(/\/+$/, '').replace(/\.json$/, ''); if (u && !/^https?:\/\//.test(u)) u = 'https://' + u; return u; }
+  push(key) {
+    const url = this._cloudUrl; if (!url) return;
+    this._dirty = this._dirty || new Set(); this._dirty.add(key);
+    const body = JSON.stringify(localStorage.getItem(key));
+    fetch(url + '/racha/' + key + '.json', { method: 'PUT', body, headers: { 'Content-Type': 'application/json' } })
+      .then(r => { if (r.ok) { this._dirty.delete(key); if (this.state.cloud !== 'on') this.setState({ cloud: 'on' }); } else throw new Error(r.status); })
+      .catch(() => this.setState({ cloud: 'error' }));
+  }
+  applyRemote(key, str) {
+    if (!Component.SYNC.includes(key)) return false;
+    if (this._dirty && this._dirty.has(key)) return false;
+    let cur = null; try { cur = localStorage.getItem(key); } catch (e) {}
+    if (str == null) { return false; }
+    if (typeof str !== 'string') str = JSON.stringify(str);
+    if (cur === str) return false;
+    const wasEnded = key === Component.MKEY && this.state.match && this.state.match.phase === 'ended';
+    try { localStorage.setItem(key, str); } catch (e) {}
+    if (key === Component.MKEY && !wasEnded) { try { if (JSON.parse(str).phase === 'ended') this.whistle(); } catch (e) {} }
+    return true;
+  }
+  async startCloud() {
+    if (this._es) { try { this._es.close(); } catch (e) {} this._es = null; }
+    let url = '', fromFile = false;
+    try { const r = await fetch('racha-config.json', { cache: 'no-store' }); if (r.ok) { const j = await r.json(); if (j && j.firebaseUrl) { url = j.firebaseUrl; fromFile = true; } } } catch (e) {}
+    if (!url) { try { url = localStorage.getItem('racha_cloud_url') || ''; } catch (e) {} }
+    if (!url) url = Component.CLOUD_URL || '';
+    url = this.normUrl(url);
+    this._cloudUrl = url;
+    if (!url) { this.setState({ cloud: 'off', cloudFromFile: false, cloudUrl: '' }); return; }
+    this.setState({ cloud: 'connecting', cloudFromFile: fromFile, cloudUrl: url });
+    if (typeof EventSource === 'undefined') { this.setState({ cloud: 'error' }); return; }
+    const es = new EventSource(url + '/racha.json'); this._es = es;
+    const onData = (ev, isPatch) => {
+      let msg; try { msg = JSON.parse(ev.data); } catch (e) { return; }
+      if (!msg) return;
+      let changed = false;
+      if (msg.path === '/') {
+        const d = msg.data || {};
+        if (!isPatch) Component.SYNC.forEach(k => {
+          if (d[k] != null) { if (this.applyRemote(k, d[k])) changed = true; }
+          else { let loc = null; try { loc = localStorage.getItem(k); } catch (e) {} if (loc && this.isAdmin()) this.push(k); }
+        });
+        else Object.keys(d).forEach(k => { if (this.applyRemote(k, d[k])) changed = true; });
+      } else {
+        const k = msg.path.replace(/^\//, '').split('/')[0];
+        if (this.applyRemote(k, msg.data)) changed = true;
+      }
+      if (this._dirty) [...this._dirty].forEach(k => this.push(k));
+      this.setState({ cloud: 'on' });
+      if (changed) this.reloadData();
+    };
+    es.addEventListener('put', e => onData(e, false));
+    es.addEventListener('patch', e => onData(e, true));
+    es.addEventListener('cancel', () => this.setState({ cloud: 'error' }));
+    es.addEventListener('auth_revoked', () => this.setState({ cloud: 'error' }));
+    es.onerror = () => { if (this.state.cloud !== 'error') this.setState({ cloud: 'connecting' }); };
+  }
+  async login() {
+    const hsh = await this.sha(this.state.pinInput || '');
+    if (hsh === this.pinHash()) { try { localStorage.setItem('racha_admin_ok', hsh); } catch (e) {} this.setState({ adminOpen: false, pinInput: '', pinErr: '' }); }
+    else this.setState({ pinErr: 'Senha incorreta.' });
+  }
+  async savePin() {
+    const p = String(this.state.newPin || '').trim();
+    if (p.length < 4) { this.setState({ cfgMsg: 'A senha precisa ter pelo menos 4 caracteres.' }); return; }
+    if (!this.isAdmin()) { this.denyEdit(); return; }
+    const hsh = await this.sha(p);
+    this.write(Component.ADMKEY, { h: hsh });
+    try { localStorage.setItem('racha_admin_ok', hsh); } catch (e) {}
+    this.setState({ newPin: '', cfgMsg: 'Senha de admin salva. Quem não tiver a senha só consegue visualizar.' });
+  }
+  cloudVals() {
+    const on = this.cloudActive(), st = this.state.cloud || 'off', admin = this.isAdmin(), hasPin = !!this.pinHash();
+    const sm = { off: ['Desligado', '#6b7a73'], connecting: ['Conectando…', '#fbbf24'], on: ['Sincronizado', '#22c55e'], error: ['Sem conexão', '#f87171'] }[st];
+    return {
+      cloudOn: on, cloudStatus: sm[0], pillDot: sm[1],
+      pillLabel: !on ? '' : (admin ? (hasPin ? 'Admin' : 'Online') : 'Visualização'), pillFg: admin ? '#4ade80' : '#c8d3cd', pillBorder: admin ? '#1f6b3c' : '#2a3a32',
+      cloudHelp: on ? 'Todos que abrirem o site veem os mesmos jogadores, times, partidas, placar ao vivo e histórico. Cada alteração aparece para todos em poucos segundos.' : 'Hoje os dados ficam só neste aparelho. Cole o endereço do seu Firebase Realtime Database para compartilhar os dados com todos que abrirem o site.',
+      cloudFromFile: !!this.state.cloudFromFile, cloudUrl: this.state.cloudUrl || '', cloudEditable: !this.state.cloudFromFile && admin,
+      cloudInput: this.state.cloudInput != null ? this.state.cloudInput : (this.state.cloudUrl || ''), onCloudInput: e => this.setState({ cloudInput: e.target.value }),
+      saveCloud: () => { try { localStorage.setItem('racha_cloud_url', this.normUrl(this.state.cloudInput != null ? this.state.cloudInput : this.state.cloudUrl)); } catch (e) {} this.setState({ cloudInput: null }); this.startCloud(); },
+      clearCloud: () => { try { localStorage.removeItem('racha_cloud_url'); } catch (e) {} this.setState({ cloudInput: '' }); this.startCloud(); },
+      showPinSetup: on && admin, pinSetupLabel: hasPin ? 'Trocar senha de admin' : 'Defina uma senha de admin (sem senha, qualquer pessoa pode alterar)',
+      newPin: this.state.newPin || '', onNewPin: e => this.setState({ newPin: e.target.value }), savePin: () => this.savePin(),
+      openAdmin: () => this.setState({ adminOpen: true, pinInput: '', pinErr: '' }), closeAdmin: () => this.setState({ adminOpen: false }),
+      adminOpen: !!this.state.adminOpen, adminAsk: hasPin && !admin, adminIn: hasPin && admin,
+      adminTitle: !hasPin ? 'Dados online' : admin ? 'Modo admin' : 'Modo visualização',
+      adminText: !hasPin ? 'Qualquer pessoa pode alterar. Defina uma senha de admin em Configurações para que os outros só visualizem.' : admin ? 'Você pode alterar tudo. As mudanças aparecem para todos.' : 'Você está vendo os dados ao vivo. Para alterar, digite a senha de admin.',
+      pinInput: this.state.pinInput || '', onPin: e => this.setState({ pinInput: e.target.value, pinErr: '' }), doLogin: () => this.login(),
+      hasPinErr: !!this.state.pinErr, pinErr: this.state.pinErr || '',
+      doLogout: () => { try { localStorage.removeItem('racha_admin_ok'); } catch (e) {} this.setState({ adminOpen: false }); },
+      hasToast: !!this.state.toast, toast: this.state.toast || ''
+    };
+  }
   initState() {
     const players = this.read(Component.KEY, Component.SEED);
     const hist = this.read(Component.HKEY, []).map((x, i) => ({ id: x.id || ('h' + i + '_' + (x.linha || 0)), ...x }));
@@ -1112,13 +1283,14 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this.timer = setInterval(() => this.tick(), 250);
+    this.startCloud();
     this._rs = () => { const n = window.innerWidth < 640; if (n !== this.state.narrow) this.setState({ narrow: n }); };
     window.addEventListener('resize', this._rs); this._rs();
     this._mv = e => this.onMove(e); this._up = () => this.onUp();
     window.addEventListener('pointermove', this._mv); window.addEventListener('pointerup', this._up); window.addEventListener('pointercancel', this._up);
   }
   componentWillUnmount() {
-    clearInterval(this.timer); window.removeEventListener('resize', this._rs);
+    clearInterval(this.timer); window.removeEventListener('resize', this._rs); if (this._es) this._es.close();
     window.removeEventListener('pointermove', this._mv); window.removeEventListener('pointerup', this._up); window.removeEventListener('pointercancel', this._up);
   }
 
@@ -1386,14 +1558,19 @@ class Component extends DCLogic {
       });
     });
   }
-  tick() { const m = this.state.match; if (m.phase === 'live') { this.checkEnd(m); this.forceUpdate(); } }
+  tick() { const m = this.state.match; if (m.phase === 'live') { if (!this.cloudActive() || this.isAdmin()) this.checkEnd(m); this.forceUpdate(); } }
   rosterOf(t, rosters, list) {
     const ids = rosters && rosters[t];
     return ids ? ids.map(id => list.find(p => p.id === id)).filter(Boolean) : this.teamMembers(t, list);
   }
+  onField(ps) {
+    const gk = ps.filter(p => p.posicao === 'goleiro').slice(0, 1);
+    const rest = ps.filter(p => !gk.includes(p));
+    return gk.concat(rest).slice(0, Component.TEAM_SIZE);
+  }
   startMatch(t1, t2, list) {
     this.audio();
-    const rosters = { [t1]: this.teamMembers(t1, list).map(p => p.id), [t2]: this.teamMembers(t2, list).map(p => p.id) };
+    const rosters = { [t1]: this.onField(this.teamMembers(t1, list)).map(p => p.id), [t2]: this.onField(this.teamMembers(t2, list)).map(p => p.id) };
     this.setMatch({ t1, t2, phase: 'live', endReason: null, startTs: Date.now(), pausedAt: 0, pausedMs: 0, endTs: 0, histId: null, events: [{ id: this.uid(), type: 'start', ms: 0 }], rosters });
   }
   pause() { const m = this.state.match; if (m.phase !== 'live') return; this.setMatch({ phase: 'paused', pausedAt: Date.now(), events: [...m.events, { id: this.uid(), type: 'pause', ms: this.elapsedOf(m) }] }); }
@@ -1515,7 +1692,7 @@ class Component extends DCLogic {
   fieldTokens(m, list, evs) {
     const nar = this.state.narrow, cols = nar ? { goleiro: 5, defesa: 17, meio: 31, ataque: 45 } : { goleiro: 6, defesa: 18, meio: 31, ataque: 44 }, cnt = this.countsBy(evs), out = [];
     [[m.t1, 'L'], [m.t2, 'R']].forEach(([t, side]) => {
-      const ps = this.rosterOf(t, m.phase === 'setup' ? null : m.rosters, list);
+      const ps = this.onField(this.rosterOf(t, m.phase === 'setup' ? null : m.rosters, list));
       const groups = { goleiro: [], defesa: [], meio: [], ataque: [] }; let k = 0;
       ps.forEach(p => { const s = p.posicao === 'goleiro' ? 'goleiro' : (groups[p.setor] ? p.setor : ['defesa', 'meio', 'ataque'][k++ % 3]); groups[s].push(p); });
       Object.keys(groups).forEach(s => groups[s].forEach((p, i, arr) => {
@@ -1558,7 +1735,7 @@ class Component extends DCLogic {
       try {
         const j = JSON.parse(r.result), data = j.data || j;
         Object.keys(data).forEach(k => { if (k.indexOf('racha_') === 0) localStorage.setItem(k, typeof data[k] === 'string' ? data[k] : JSON.stringify(data[k])); });
-        this.setState({ ...this.initState(), cfgMsg: 'Backup importado com sucesso.' });
+        this.reloadData(); if (this.cloudActive() && this.isAdmin()) Component.SYNC.forEach(k => { if (k !== Component.ADMKEY && localStorage.getItem(k)) this.push(k); }); this.setState({ cfgMsg: 'Backup importado com sucesso.' });
       } catch (x) { this.setState({ cfgMsg: 'Arquivo inválido.' }); }
     };
     r.readAsText(file); input.value = '';
@@ -1882,6 +2059,7 @@ class Component extends DCLogic {
       ...this.genVals(list),
       ...this.histVals(),
       ...this.cfgVals(),
+      ...this.cloudVals(),
       ...this.colVals(list),
       isNarrow: !!this.state.narrow, isWide: !this.state.narrow,
       stop: e => e.stopPropagation(),
