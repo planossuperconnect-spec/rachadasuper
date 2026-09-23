@@ -25,4 +25,7 @@ Arquivo principal: `Racha dos Amigos.dc.html` (um único DC com todas as página
 - Banco online: Firebase Realtime Database via REST + EventSource (sem SDK). URL lida de `racha-config.json` ({firebaseUrl}) no GitHub Pages, senão localStorage `racha_cloud_url`. Chaves SYNC guardadas como string JSON em /racha/<key>. Senha admin (hash SHA-256) em `racha_admin_v1`; sem senha todos editam; com senha, visitantes só visualizam (write() bloqueia). Só admin roda checkEnd; visitantes ouvem apito ao receber phase 'ended'.
 - Publicação: `index.html` = bundle (super_inline_html) de `Racha dos Amigos.dc.html`; subir index.html + racha-config.json na raiz do repo `superracha` (GitHub Pages).
 - Ranking: real, derivado do histórico (V=3, E=1).
+- Resumo (aba 'resumo'): modo dia (Equipe que mais venceu, share PNG) e mensal (Artilheiro 👑 e Líder de assistências ⭐, empates mostram todos; share PNG). Derivado do histórico.
+- Foto do jogador: editor de recorte (canvas 360×480, guia do topo da cabeça a 14%); remoção de fundo via MediaPipe (CDN, só online); fallback PNG recortado. fotoFramed=true posiciona coroa dentro da folga acima da cabeça.
+- Gol: autor obrigatório; "Sem assistência / anotar depois"; botão "+ 🅰 Assist." na timeline (partida e histórico).
 - Início: Próximo racha e Confirmados ainda demonstrativos; Partida atual e Placar ao vivo.

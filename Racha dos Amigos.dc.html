@@ -458,6 +458,7 @@ input::placeholder{color:#5f6e67}
               </div>
               <sc-if value="{{ e.editable }}">
                 <div style="display:flex;gap:4px">
+                  <sc-if value="{{ e.needAssist }}"><button onClick="{{ e.onEdit }}" aria-label="Anotar assistência" style="height:40px;padding:0 10px;border-radius:8px;border:1px solid #2f7a4f;background:none;color:#4ade80;font-family:'Barlow',sans-serif;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap">+ 🅰 Assist.</button></sc-if>
                   <button onClick="{{ e.onEdit }}" aria-label="Editar" style="min-width:40px;height:40px;border-radius:8px;border:none;font-family:'Barlow',sans-serif;cursor:pointer;background:#1f2925;color:#c8d3cd;font-size:15px" style-hover="background:#2a3832">✏</button>
                   <button onClick="{{ e.onDel }}" aria-label="Excluir" style="min-width:40px;height:40px;padding:0 8px;border-radius:8px;border:none;font-family:'Barlow',sans-serif;cursor:pointer;background:{{ e.delBg }};color:{{ e.delFg }};font-size:13px;font-weight:700">{{ e.delLabel }}</button>
                 </div>
@@ -544,6 +545,154 @@ input::placeholder{color:#5f6e67}
         </section>
       </sc-for>
     </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isResumo }}" hint-placeholder-val="{{ false }}">
+  <main data-screen-label="Resumo do dia" style="max-width:1180px;margin:0 auto;padding:32px 16px 56px;display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="color:#4ade80;font-size:13px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase">{{ rsEyebrow }}</div>
+        <h1 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(34px,5vw,48px);line-height:1.05;text-transform:uppercase">{{ rsTitle }}</h1>
+      </div>
+      <sc-if value="{{ rsCanShare }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ rsShare }}" style="display:flex;align-items:center;gap:8px;background:#22c55e;color:#0b120e;border:none;border-radius:10px;padding:12px 18px;min-height:44px;font-family:'Barlow',sans-serif;font-weight:700;font-size:15px;cursor:pointer" style-hover="background:#4ade80">{{ rsShareLabel }}</button>
+      </sc-if>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#0f1412;border:1px solid #2a3a32;border-radius:12px;padding:4px;max-width:360px">
+      <sc-for list="{{ rsModes }}" as="o" hint-placeholder-count="2">
+        <button onClick="{{ o.pick }}" style="min-height:42px;border:none;border-radius:8px;background:{{ o.bg }};color:{{ o.fg }};font-family:'Barlow',sans-serif;font-weight:700;font-size:15px;cursor:pointer">{{ o.label }}</button>
+      </sc-for>
+    </div>
+    <sc-if value="{{ rsHasDates }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px">
+        <sc-for list="{{ rsDates }}" as="c" hint-placeholder-count="3">
+          <button onClick="{{ c.pick }}" style="min-height:44px;padding:0 14px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.fg }};font-family:'Barlow',sans-serif;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;flex-shrink:0">{{ c.label }}</button>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ rsEmpty }}" hint-placeholder-val="{{ true }}">
+      <div style="border:1px dashed #2a3a32;border-radius:16px;padding:48px 20px;text-align:center;color:#a3b0aa;font-size:15px">Nenhuma partida finalizada nesta data.</div>
+    </sc-if>
+    <sc-if value="{{ rsHas }}" hint-placeholder-val="{{ false }}">
+      <section style="background:#12301f;border:1px solid #1f6b3c;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:16px">
+        <span style="color:#86efac;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">{{ rsTopTitle }}</span>
+        <sc-if value="{{ rsHasWinner }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px">
+            <sc-for list="{{ rsTop }}" as="t" hint-placeholder-count="1">
+              <div style="display:flex;align-items:center;gap:16px;background:#0f1a14;border-radius:14px;padding:14px 16px">
+                <div role="img" aria-label="{{ t.alt }}" style="width:62px;aspect-ratio:310/480;flex-shrink:0;background-image:{{ t.img }};background-size:contain;background-repeat:no-repeat;background-position:center;filter:drop-shadow(0 6px 10px rgba(0,0,0,0.5))"></div>
+                <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                  <span style="display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:30px;line-height:1;text-transform:uppercase"><span style="width:10px;height:10px;border-radius:50%;background:{{ t.cor }};flex-shrink:0"></span>{{ t.nome }}</span>
+                  <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:22px;color:#4ade80;text-transform:uppercase">{{ t.vit }}</span>
+                  <span style="font-size:13px;color:#a3b0aa">{{ t.colete }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ rsNoWinner }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:15px;color:#c8f0d6">Nenhuma vitória nesta data: todas as partidas terminaram empatadas.</span>
+        </sc-if>
+      </section>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
+        <sc-for list="{{ rsNums }}" as="n" hint-placeholder-count="3">
+          <div style="background:#161d1a;border:1px solid #223029;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:4px"><span style="color:#a3b0aa;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;font-size:11px">{{ n.label }}</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(28px,6vw,40px);line-height:1">{{ n.v }}</span></div>
+        </sc-for>
+      </div>
+      <section style="background:#161d1a;border:1px solid #223029;border-radius:16px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) repeat(5,36px);gap:6px;padding:12px 16px;border-bottom:1px solid #223029;color:#8fa39a;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase">
+          <span>Jogador</span><span style="text-align:right">J</span><span style="text-align:right">V</span><span style="text-align:right">G</span><span style="text-align:right">A</span><span style="text-align:right">Min</span>
+        </div>
+        <sc-for list="{{ rsRows }}" as="r" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) repeat(5,36px);gap:6px;align-items:center;padding:11px 16px;border-bottom:1px solid #1f2925;font-size:15px">
+            <span style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.nome }}</span>
+            <span style="text-align:right;color:#c8d3cd">{{ r.j }}</span>
+            <span style="text-align:right;font-weight:700;color:#4ade80">{{ r.v }}</span>
+            <span style="text-align:right;color:#c8d3cd">{{ r.gols }}</span>
+            <span style="text-align:right;color:#c8d3cd">{{ r.ast }}</span>
+            <span style="text-align:right;color:#8fa39a">{{ r.min }}</span>
+          </div>
+        </sc-for>
+      </section>
+    </sc-if>
+    <sc-if value="{{ rmShow }}" hint-placeholder-val="{{ false }}">
+      <sc-if value="{{ rmHasMonths }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px">
+          <sc-for list="{{ rmMonths }}" as="c" hint-placeholder-count="2">
+            <button onClick="{{ c.pick }}" style="min-height:44px;padding:0 14px;border-radius:999px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.fg }};font-family:'Barlow',sans-serif;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;flex-shrink:0">{{ c.label }}</button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ rmEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px dashed #2a3a32;border-radius:16px;padding:48px 20px;text-align:center;color:#a3b0aa;font-size:15px">Nenhuma partida finalizada neste mês.</div>
+      </sc-if>
+      <sc-if value="{{ rmHas }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px">
+          <section style="background:#1d1809;border:1px solid #7a5a14;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:6px">
+            <span style="color:#fcd34d;font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase">{{ rmScorerTitle }}</span>
+            <sc-if value="{{ rmHasScorer }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-wrap:wrap;gap:18px 16px">
+            <sc-for list="{{ rmScorers }}" as="l" hint-placeholder-count="1">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:clamp(120px,32vw,160px)">
+                <div style="position:relative;width:100%;aspect-ratio:3/4;margin-top:36px">
+                  <div style="position:absolute;inset:0;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 50% 30%,#4a3a0c 0%,#1d1809 75%);border:1px solid #fbbf24">
+                    <div role="img" aria-label="{{ l.nome }}" style="position:absolute;inset:0;background-image:{{ l.fotoBg }};background-size:cover;background-position:center top"></div>
+                    <sc-if value="{{ l.noFoto }}"><span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:44px;color:rgba(255,255,255,0.35)">{{ l.initials }}</span></sc-if>
+                  </div>
+                  <svg viewBox="0 0 64 40" aria-hidden="true" style="position:absolute;left:50%;top:{{ l.crownTop }};width:46%;transform:translate(-50%,-100%);filter:drop-shadow(0 4px 6px rgba(0,0,0,0.55));z-index:2"><path d="M4 37 L7 11 L21 24 L32 4 L43 24 L57 11 L60 37 Z" fill="#fbbf24" stroke="#92400e" stroke-width="2" stroke-linejoin="round"></path><rect x="4" y="32" width="56" height="6" rx="2" fill="#f59e0b" stroke="#92400e" stroke-width="2"></rect><circle cx="7" cy="10" r="3.5" fill="#fde68a" stroke="#92400e" stroke-width="1.5"></circle><circle cx="32" cy="4" r="3.5" fill="#fde68a" stroke="#92400e" stroke-width="1.5"></circle><circle cx="57" cy="10" r="3.5" fill="#fde68a" stroke="#92400e" stroke-width="1.5"></circle></svg>
+                </div>
+                <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:22px;line-height:1.05;text-transform:uppercase;text-align:center;overflow-wrap:anywhere">{{ l.nome }}</span>
+                <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;color:#fbbf24;text-transform:uppercase">{{ l.total }}</span>
+              </div>
+            </sc-for>
+          </div>
+            </sc-if>
+            <sc-if value="{{ rmNoScorer }}" hint-placeholder-val="{{ false }}"><span style="color:#fde68a;font-size:15px;padding-top:10px">Nenhum gol registrado neste mês.</span></sc-if>
+          </section>
+          <section style="background:#0f231a;border:1px solid #1f6b3c;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:6px">
+            <span style="color:#86efac;font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase">{{ rmAssistTitle }}</span>
+            <sc-if value="{{ rmHasAssist }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-wrap:wrap;gap:18px 16px">
+            <sc-for list="{{ rmAssists }}" as="l" hint-placeholder-count="1">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:clamp(120px,32vw,160px)">
+                <div style="position:relative;width:100%;aspect-ratio:3/4;margin-top:36px">
+                  <div style="position:absolute;inset:0;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 50% 30%,#14532d 0%,#0f231a 75%);border:1px solid #4ade80">
+                    <div role="img" aria-label="{{ l.nome }}" style="position:absolute;inset:0;background-image:{{ l.fotoBg }};background-size:cover;background-position:center top"></div>
+                    <sc-if value="{{ l.noFoto }}"><span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:44px;color:rgba(255,255,255,0.35)">{{ l.initials }}</span></sc-if>
+                  </div>
+                  <svg viewBox="0 0 40 40" aria-hidden="true" style="position:absolute;left:50%;top:{{ l.crownTop }};width:30%;transform:translate(-50%,-100%);filter:drop-shadow(0 4px 6px rgba(0,0,0,0.55));z-index:2"><path d="M20 2 L25 14 L38 15 L28 24 L31 37 L20 30 L9 37 L12 24 L2 15 L15 14 Z" fill="#4ade80" stroke="#14532d" stroke-width="2" stroke-linejoin="round"></path></svg>
+                </div>
+                <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:22px;line-height:1.05;text-transform:uppercase;text-align:center;overflow-wrap:anywhere">{{ l.nome }}</span>
+                <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;color:#4ade80;text-transform:uppercase">{{ l.total }}</span>
+              </div>
+            </sc-for>
+          </div>
+            </sc-if>
+            <sc-if value="{{ rmNoAssist }}" hint-placeholder-val="{{ false }}"><span style="color:#c8f0d6;font-size:15px;padding-top:10px">Nenhuma assistência registrada neste mês.</span></sc-if>
+          </section>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(46%,140px),1fr));gap:10px">
+          <sc-for list="{{ rmNums }}" as="n" hint-placeholder-count="4">
+            <div style="background:#161d1a;border:1px solid #223029;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:4px"><span style="color:#a3b0aa;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;font-size:11px">{{ n.label }}</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(28px,6vw,40px);line-height:1">{{ n.v }}</span></div>
+          </sc-for>
+        </div>
+        <section style="background:#161d1a;border:1px solid #223029;border-radius:16px;overflow:hidden;display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) repeat(4,38px);gap:6px;padding:12px 16px;border-bottom:1px solid #223029;color:#8fa39a;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase">
+            <span>Jogador</span><span style="text-align:right">J</span><span style="text-align:right">V</span><span style="text-align:right">G</span><span style="text-align:right">A</span>
+          </div>
+          <sc-for list="{{ rmRows }}" as="r" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) repeat(4,38px);gap:6px;align-items:center;padding:11px 16px;border-bottom:1px solid #1f2925;font-size:15px">
+              <span style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.nome }}</span>
+              <span style="text-align:right;color:#c8d3cd">{{ r.j }}</span>
+              <span style="text-align:right;color:#c8d3cd">{{ r.v }}</span>
+              <span style="text-align:right;font-weight:700;color:#fbbf24">{{ r.gols }}</span>
+              <span style="text-align:right;font-weight:700;color:#4ade80">{{ r.ast }}</span>
+            </div>
+          </sc-for>
+        </section>
+      </sc-if>
+    </sc-if>
   </main>
   </sc-if>
 
@@ -882,6 +1031,7 @@ input::placeholder{color:#5f6e67}
               </div>
               <sc-if value="{{ e.editable }}">
                 <div style="display:flex;gap:4px">
+                  <sc-if value="{{ e.needAssist }}"><button onClick="{{ e.onEdit }}" aria-label="Anotar assistência" style="height:40px;padding:0 10px;border-radius:8px;border:1px solid #2f7a4f;background:none;color:#4ade80;font-family:'Barlow',sans-serif;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap">+ 🅰 Assist.</button></sc-if>
                   <button onClick="{{ e.onEdit }}" aria-label="Editar" style="min-width:40px;height:40px;border-radius:8px;border:none;font-family:'Barlow',sans-serif;cursor:pointer;background:#1f2925;color:#c8d3cd;font-size:15px" style-hover="background:#2a3832">✏</button>
                   <button onClick="{{ e.onDel }}" aria-label="Excluir" style="min-width:40px;height:40px;padding:0 8px;border-radius:8px;border:none;font-family:'Barlow',sans-serif;cursor:pointer;background:{{ e.delBg }};color:{{ e.delFg }};font-size:13px;font-weight:700">{{ e.delLabel }}</button>
                 </div>
@@ -910,6 +1060,37 @@ input::placeholder{color:#5f6e67}
         <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;border-top:1px solid #223029;padding-top:18px">
           <button onClick="{{ hvDel }}" style="min-height:44px;padding:0 4px;border:none;background:none;color:#f08080;font-family:'Barlow',sans-serif;font-weight:600;font-size:15px;cursor:pointer">{{ hvDelLabel }}</button>
           <button onClick="{{ closeHv }}" style="min-height:44px;padding:0 18px;border-radius:10px;border:1px solid #2a3a32;background:none;color:#eef2ef;font-family:'Barlow',sans-serif;font-weight:600;font-size:15px;cursor:pointer">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ cropOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:95;background:rgba(5,8,7,0.85);display:flex;align-items:center;justify-content:center;padding:12px">
+      <div style="width:100%;max-width:460px;max-height:calc(100vh - 24px);overflow-y:auto;background:#161d1a;border:1px solid #26352d;border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:24px;text-transform:uppercase">Ajustar foto</h2>
+          <button onClick="{{ cropCancel }}" aria-label="Fechar" style="width:44px;height:44px;border-radius:10px;border:none;background:#1f2925;color:#a3b0aa;font-size:22px;line-height:1;cursor:pointer">×</button>
+        </div>
+        <canvas ref="{{ cropRef }}" width="360" height="480" onPointerDown="{{ cropDown }}" onPointerMove="{{ cropMove }}" onPointerUp="{{ cropUp }}" onPointerCancel="{{ cropUp }}" style="width:100%;max-width:300px;aspect-ratio:3/4;align-self:center;border-radius:14px;touch-action:none;cursor:grab;background:#0f1412;border:1px solid #2a3a32"></canvas>
+        <span style="color:#8fa39a;font-size:13px;text-align:center;line-height:1.4">Arraste para posicionar. Deixe o topo da cabeça na linha verde e o rosto dentro do contorno.</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="color:#a3b0aa;font-size:13px;font-weight:600">Zoom</span>
+          <input type="range" min="30" max="400" value="{{ cropZoom }}" onChange="{{ onCropZoom }}" style="flex:1;accent-color:#22c55e;height:32px">
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <button onClick="{{ cropAuto }}" style="min-height:44px;padding:0 18px;border-radius:10px;border:none;font-family:'Barlow',sans-serif;cursor:pointer;background:#22c55e;color:#0b120e;font-weight:700;font-size:15px;flex:1 1 180px">{{ cropAutoLabel }}</button>
+          <sc-if value="{{ cropHasCut }}"><button onClick="{{ cropToggle }}" style="min-height:44px;padding:0 14px;border-radius:10px;border:1px solid #2a3a32;background:none;color:#eef2ef;font-family:'Barlow',sans-serif;font-weight:600;font-size:14px;cursor:pointer">{{ cropToggleLabel }}</button></sc-if>
+          <sc-if value="{{ cropCanFrame }}"><button onClick="{{ cropFrame }}" style="min-height:44px;padding:0 14px;border-radius:10px;border:1px solid #2a3a32;background:none;color:#eef2ef;font-family:'Barlow',sans-serif;font-weight:600;font-size:14px;cursor:pointer">Enquadrar automático</button></sc-if>
+        </div>
+        <sc-if value="{{ cropHasMsg }}"><span style="font-size:13px;line-height:1.5;color:{{ cropMsgColor }};background:#0f1412;border:1px solid #2a3a32;border-radius:10px;padding:10px 12px">{{ cropMsg }}</span></sc-if>
+        <label style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;border-radius:10px;border:1px dashed #2f7a4f;color:#4ade80;font-weight:600;font-size:14px;cursor:pointer;text-align:center">Enviar PNG já recortado<input type="file" accept="image/png,image/webp" onChange="{{ cropPng }}" style="display:none"></label>
+        <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;border-top:1px solid #223029;padding-top:14px">
+          <button onClick="{{ cropDownload }}" style="min-height:44px;padding:0 14px;border-radius:10px;border:1px solid #2a3a32;background:none;color:#eef2ef;font-family:'Barlow',sans-serif;font-weight:600;font-size:14px;cursor:pointer">Baixar PNG</button>
+          <div style="display:flex;gap:8px">
+            <button onClick="{{ cropCancel }}" style="min-height:44px;padding:0 14px;border-radius:10px;border:1px solid #2a3a32;background:none;color:#eef2ef;font-family:'Barlow',sans-serif;font-weight:600;font-size:14px;cursor:pointer">Cancelar</button>
+            <button onClick="{{ cropSave }}" style="min-height:44px;padding:0 18px;border-radius:10px;border:none;font-family:'Barlow',sans-serif;cursor:pointer;background:#22c55e;color:#0b120e;font-weight:700;font-size:15px">Usar foto</button>
+          </div>
         </div>
       </div>
     </div>
@@ -988,6 +1169,9 @@ input::placeholder{color:#5f6e67}
               {{ photoLabel }}
               <input type="file" accept="image/*" onChange="{{ onPhoto }}" style="display:none">
             </label>
+            <sc-if value="{{ formHasFoto }}">
+              <button onClick="{{ openCropCur }}" style="display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border-radius:10px;border:1px solid #2a3a32;background:none;color:#eef2ef;font-family:'Barlow',sans-serif;font-weight:600;font-size:13px;cursor:pointer">✂ Recortar / remover fundo</button>
+            </sc-if>
             <sc-if value="{{ formHasFoto }}">
               <button onClick="{{ removePhoto }}" style="background:none;border:none;padding:0;color:#8fa39a;font-family:'Barlow',sans-serif;font-size:13px;cursor:pointer;text-align:left" style-hover="color:#eef2ef">Remover foto</button>
             </sc-if>
@@ -1127,6 +1311,7 @@ class Component extends DCLogic {
     .concat([{ id: 20, nome: 'Gabriel', apelido: '', posicao: 'goleiro', habilidade: 'mediano', foto: '' }, { id: 21, nome: 'Diogo', apelido: '', posicao: 'goleiro', habilidade: 'mediano', foto: '' }]);
 
   fieldRef = React.createRef();
+  cropRef = React.createRef();
   state = this.initState();
 
   read(key, def) { try { const s = localStorage.getItem(key); if (s) return JSON.parse(s); } catch (e) {} return def; }
@@ -1351,7 +1536,7 @@ class Component extends DCLogic {
   onPhoto(e) {
     const input = e.target, file = input.files && input.files[0];
     if (!file) return;
-    this.resizeImage(file, 600, 'jpg', foto => this.setForm({ foto }));
+    this.openCropSrc(URL.createObjectURL(file), true);
     input.value = '';
   }
   save() {
@@ -1647,15 +1832,15 @@ class Component extends DCLogic {
         title: isP ? this.nameOf(e.player) : E[e.type][1],
         sub: isP ? ('Time ' + e.team + ' · ' + (e.type === 'goal' ? (e.assist != null ? 'Assistência: ' + this.nameOf(e.assist) : 'Sem assistência') : E[e.type][1])) : '',
         cor: isP ? this.teamInfo(e.team).cor : '#3c5446',
-        editable: editable && isP,
+        editable: editable && isP, needAssist: editable && e.type === 'goal' && e.assist == null,
         onEdit: () => this.editEv(scope, e), onDel: () => this.delEv(scope, e.id),
         delLabel: asking ? 'Excluir?' : '🗑', delBg: asking ? '#dc4a4a' : '#1f2925', delFg: asking ? '#ffffff' : '#c8d3cd'
       };
     });
   }
-  careerStats() {
+  careerStats(H) {
     const S = {}, g = id => S[id] || (S[id] = { j: 0, v: 0, e: 0, d: 0, min: 0, gols: 0, ast: 0, fal: 0, am: 0, ve: 0 });
-    this.state.hist.forEach(x => {
+    (H || this.state.hist).forEach(x => {
       if (x.rosters) [x.t1, x.t2].forEach(t => (x.rosters[t] || []).forEach(id => {
         const s = g(id); s.j++; s.min += Math.round((x.durMs || 0) / 60000);
         const my = t === x.t1 ? x.a : x.b, ot = t === x.t1 ? x.b : x.a;
@@ -1743,8 +1928,8 @@ class Component extends DCLogic {
 
   // ---------- valores das telas
   pagesVals(page, list, S) {
-    const ids = ['inicio', 'jogadores', 'presenca', 'times', 'partida', 'coletes', 'historico', 'ranking', 'config'];
-    const labels = ['Início', 'Jogadores', 'Presença', 'Times', '⚽ Partida', 'Coletes', 'Histórico', 'Ranking', 'Configurações'];
+    const ids = ['inicio', 'jogadores', 'presenca', 'times', 'partida', 'coletes', 'historico', 'resumo', 'ranking', 'config'];
+    const labels = ['Início', 'Jogadores', 'Presença', 'Times', '⚽ Partida', 'Coletes', 'Histórico', 'Resumo', 'Ranking', 'Configurações'];
     const cur = ids.includes(page) ? page : 'inicio';
     const navItems = ids.map((id, i) => { const a = id === cur; return { label: labels[i], go: e => this.go(id, e), bg: a ? '#163823' : 'transparent', fg: a ? '#4ade80' : '#a3b0aa', fw: a ? 600 : 500, hoverBg: a ? '#163823' : '#18201d' }; });
     const conf = this.state.presenca;
@@ -1762,7 +1947,7 @@ class Component extends DCLogic {
       .map((r, i) => ({ ...r, pos: i + 1, posColor: i < 3 ? '#4ade80' : '#6b7a73' }));
     return {
       navItems,
-      isHome: cur === 'inicio', isPlayers: cur === 'jogadores', isPresenca: cur === 'presenca', isTimes: cur === 'times', isPartida: cur === 'partida', isHistorico: cur === 'historico', isColetes: cur === 'coletes', isRanking: cur === 'ranking', isConfig: cur === 'config',
+      isHome: cur === 'inicio', isPlayers: cur === 'jogadores', isPresenca: cur === 'presenca', isTimes: cur === 'times', isPartida: cur === 'partida', isHistorico: cur === 'historico', isColetes: cur === 'coletes', isResumo: cur === 'resumo', isRanking: cur === 'ranking', isConfig: cur === 'config',
       presenca, presConf: cnt('conf'), presNao: 0, presPend: cnt('pend'),
       ranking, rankEmpty: ranking.length === 0, rankHas: ranking.length > 0,
       openImport: () => this.setState({ importOpen: true, importText: '' }),
@@ -1850,10 +2035,10 @@ class Component extends DCLogic {
         evTitle: ev.editId ? 'Editar evento' : ({ goal: 'Registrar gol', yellow: 'Cartão', red: 'Cartão', foul: 'Registrar falta' })[ev.type],
         evTypeOpts: types.map(([v, l]) => ({ label: l, bg: ev.type === v ? '#22c55e' : 'transparent', fg: ev.type === v ? '#0b120e' : '#a3b0aa', pick: () => setEv({ type: v }) })),
         evTeamOpts: [tOpt(e1), tOpt(e2)],
-        evPlayerLabel: ev.type === 'goal' ? 'Quem marcou?' : 'Jogador',
+        evPlayerLabel: ev.type === 'goal' ? 'Quem marcou? (obrigatório)' : 'Jogador (obrigatório)',
         evPlayers: pool.map(p => chip(p.apelido || p.nome, ev.player === p.id, () => setEv({ player: p.id, assist: ev.assist === p.id ? null : ev.assist }))),
         evIsGoal: ev.type === 'goal',
-        evAssists: [chip('Sem assistência', ev.assist == null, () => setEv({ assist: null }))].concat(pool.filter(p => p.id !== ev.player).map(p => chip(p.apelido || p.nome, ev.assist === p.id, () => setEv({ assist: p.id })))),
+        evAssists: [chip('Sem assistência / anotar depois', ev.assist == null, () => setEv({ assist: null }))].concat(pool.filter(p => p.id !== ev.player).map(p => chip(p.apelido || p.nome, ev.assist === p.id, () => setEv({ assist: p.id })))),
         evMin: ev.min, onEvMin: e => setEv({ min: e.target.value }),
         evOkBg: ev.player ? '#22c55e' : '#1f2925', evOkFg: ev.player ? '#0b120e' : '#5f6e67',
         closeEv: () => this.setState({ ev: null }), saveEv: () => this.saveEv()
@@ -2015,6 +2200,329 @@ class Component extends DCLogic {
     const date = this.rachaDate(), r = this.state.coletes.find(x => x.date === date);
     this.setState({ colPick: { recId: r ? r.id : this.uid(), cor, date }, colSearch: '' });
   }
+  // ---------- resumo do dia
+  dayKey(x) { return x.date ? this.isoDate(new Date(x.date)) : null; }
+  resumoData(list) {
+    const H = this.state.hist.filter(x => x.date);
+    const dates = [...new Set(H.map(x => this.dayKey(x)))].sort().reverse();
+    const sel = dates.includes(this.state.rsDate) ? this.state.rsDate : (dates[0] || null);
+    const day = sel ? H.filter(x => this.dayKey(x) === sel) : [];
+    const wins = {};
+    day.forEach(x => { const t1 = x.t1 || 'A', t2 = x.t2 || 'B'; if (x.a > x.b) wins[t1] = (wins[t1] || 0) + 1; else if (x.b > x.a) wins[t2] = (wins[t2] || 0) + 1; });
+    const max = Math.max(0, ...Object.values(wins));
+    const top = max > 0 ? Object.keys(wins).filter(l => wins[l] === max).sort().map(l => ({ l, v: max, cor: this.cfgUni(l) })) : [];
+    const S = this.careerStats(day);
+    const rows = list.map(p => { const s = S[p.id]; return s && (s.j || s.gols || s.ast) ? { nome: p.apelido || p.nome, j: s.j, v: s.v, gols: s.gols, ast: s.ast, min: s.min } : null; })
+      .filter(Boolean).sort((a, b) => (b.v - a.v) || (b.gols - a.gols) || (b.ast - a.ast) || a.nome.localeCompare(b.nome));
+    const gols = day.reduce((s, x) => s + (x.a || 0) + (x.b || 0), 0), dur = day.reduce((s, x) => s + (x.durMs || 0), 0);
+    return { dates, sel, day, top, rows, gols, dur };
+  }
+  cfgUni(l) { return this.state.cfg.uniforme[l] === 'preto' ? 'preto' : 'verde'; }
+  loadImg(src) { return new Promise(res => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; }); }
+  async shareResumo(list) {
+    const d = this.resumoData(list); if (!d.day.length) return;
+    this.setState({ rsBusy: true });
+    try {
+      try { await Promise.all(["800 64px 'Barlow Condensed'", "700 30px 'Barlow Condensed'", "600 28px 'Barlow'"].map(f => document.fonts.load(f))); } catch (e) {}
+      const W = 1080, rowH = 62, rows = d.rows.slice(0, 16);
+      const topRows = Math.max(1, Math.ceil(d.top.length / 2));
+      const H = 330 + 90 + topRows * 250 + 40 + 190 + 90 + rows.length * rowH + 120;
+      const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+      const CD = "'Barlow Condensed', sans-serif", BR = "'Barlow', sans-serif";
+      const rr = (X, Y, w, hh, r, fill, stroke) => { x.beginPath(); x.roundRect ? x.roundRect(X, Y, w, hh, r) : x.rect(X, Y, w, hh); if (fill) { x.fillStyle = fill; x.fill(); } if (stroke) { x.strokeStyle = stroke; x.lineWidth = 2; x.stroke(); } };
+      x.fillStyle = '#0f1412'; x.fillRect(0, 0, W, H);
+      let y = 70;
+      const hl = document.querySelector('header img'); const logo = hl ? await this.loadImg(hl.src) : null;
+      if (logo) { const lh = 110, lw = logo.width * lh / logo.height; x.drawImage(logo, 60, y - 20, Math.min(lw, 360), lh); }
+      else { x.fillStyle = '#4ade80'; x.font = '800 64px ' + CD; x.fillText('SUPER RACHA', 60, y + 50); }
+      y += 150;
+      x.fillStyle = '#ffffff'; x.font = '800 76px ' + CD; x.fillText('RESUMO DO DIA', 60, y);
+      y += 52; x.fillStyle = '#4ade80'; x.font = '600 32px ' + BR; x.fillText(this.fmtIso(d.sel), 60, y);
+      y += 48;
+      const bh = 90 + topRows * 250;
+      rr(40, y, W - 80, bh, 28, '#12301f', '#1f6b3c');
+      x.fillStyle = '#86efac'; x.font = '700 30px ' + CD; x.fillText('EQUIPE QUE MAIS VENCEU', 80, y + 62);
+      if (!d.top.length) { x.fillStyle = '#c8f0d6'; x.font = '600 30px ' + BR; x.fillText('Nenhuma vitória: só empates.', 80, y + 170); }
+      for (let i = 0; i < d.top.length; i++) {
+        const t = d.top[i], col = d.top.length > 1 ? i % 2 : 0, row = Math.floor(i / 2);
+        const bx = 80 + col * 470, by = y + 100 + row * 250;
+        const img = await this.loadImg(Component.SHIRTS[t.cor]);
+        if (img) x.drawImage(img, bx, by, 136, 136 * 480 / 310);
+        x.fillStyle = this.teamInfo(t.l).cor; x.beginPath(); x.arc(bx + 170, by + 58, 10, 0, Math.PI * 2); x.fill();
+        x.fillStyle = '#ffffff'; x.font = '800 68px ' + CD; x.fillText('TIME ' + t.l, bx + 192, by + 82);
+        x.fillStyle = '#4ade80'; x.font = '800 44px ' + CD; x.fillText(t.v + (t.v === 1 ? ' VITÓRIA' : ' VITÓRIAS'), bx + 170, by + 142);
+        x.fillStyle = '#a3b0aa'; x.font = '600 24px ' + BR; x.fillText('Colete ' + t.cor, bx + 170, by + 182);
+      }
+      y += bh + 40;
+      const nums = [['PARTIDAS', d.day.length], ['GOLS', d.gols], ['TEMPO', Math.round(d.dur / 60000) + ' min']];
+      nums.forEach((n, i) => { const w = (W - 80 - 40) / 3, bx = 40 + i * (w + 20); rr(bx, y, w, 150, 22, '#161d1a', '#223029'); x.fillStyle = '#a3b0aa'; x.font = '700 24px ' + CD; x.fillText(n[0], bx + 28, y + 50); x.fillStyle = '#ffffff'; x.font = '800 64px ' + CD; x.fillText(String(n[1]), bx + 28, y + 122); });
+      y += 190;
+      const cols = [['J', 700], ['V', 790], ['G', 880], ['A', 970]];
+      x.fillStyle = '#8fa39a'; x.font = '700 24px ' + CD; x.fillText('JOGADOR', 60, y + 30); cols.forEach(([t, cx]) => { x.textAlign = 'right'; x.fillText(t, cx + 30, y + 30); x.textAlign = 'left'; });
+      y += 60;
+      rows.forEach((r, i) => {
+        if (i % 2 === 0) rr(40, y - 42, W - 80, rowH - 4, 12, '#141b18');
+        x.fillStyle = '#ffffff'; x.font = '600 30px ' + BR; let nm = r.nome; while (x.measureText(nm).width > 580 && nm.length > 3) nm = nm.slice(0, -2); x.fillText(nm === r.nome ? nm : nm + '…', 60, y);
+        [r.j, r.v, r.gols, r.ast].forEach((v, k) => { x.textAlign = 'right'; x.fillStyle = k === 1 ? '#4ade80' : '#c8d3cd'; x.font = (k === 1 ? '800 ' : '600 ') + '32px ' + CD; x.fillText(String(v), cols[k][1] + 30, y); x.textAlign = 'left'; });
+        y += rowH;
+      });
+      x.fillStyle = '#5f6e67'; x.font = '600 24px ' + BR; x.fillText('Super Racha · terças, 20h', 60, H - 50);
+      const blob = await new Promise(res => c.toBlob(res, 'image/png'));
+      const file = new File([blob], 'resumo-super-racha-' + d.sel + '.png', { type: 'image/png' });
+      const txt = 'Resumo do Super Racha · ' + this.fmtIso(d.sel);
+      if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file], text: txt }); } catch (e) {} }
+      else {
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; document.body.appendChild(a); a.click(); a.remove();
+        this.setState({ toast: 'Imagem salva. Envie pelo WhatsApp.' }); clearTimeout(this._tt); this._tt = setTimeout(() => this.setState({ toast: '' }), 3500);
+      }
+    } finally { this.setState({ rsBusy: false }); }
+  }
+  resumoVals(list) {
+    const d = this.resumoData(list);
+    const chip = (label, on, pick) => ({ label, pick, bg: on ? '#22c55e' : '#0f1412', fg: on ? '#0b120e' : '#eef2ef', border: on ? '#22c55e' : '#2a3a32' });
+    const has = d.day.length > 0, mode = this.state.rsMode === 'mes' ? 'mes' : 'dia', dia = mode === 'dia';
+    const M = this.resumoMonthData(list), mHas = M.hist.length > 0;
+    const MN = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+    const mLabel = k => { const [y, m] = k.split('-'); return MN[+m - 1] + ' de ' + y; };
+    const leader = (p, total, unit) => ({ nome: p.apelido || p.nome, fotoBg: this.cssUrl(p.foto), noFoto: !p.foto, initials: this.initials(p.nome), crownTop: p.foto && p.fotoFramed ? '15%' : '-2%', total: total + ' ' + unit + (total === 1 ? '' : 's') });
+    return {
+      rsModes: [['dia', 'Resumo do dia'], ['mes', 'Resumo mensal']].map(([v, l]) => ({ label: l, bg: mode === v ? '#22c55e' : 'transparent', fg: mode === v ? '#0b120e' : '#a3b0aa', pick: () => this.setState({ rsMode: v }) })),
+      rsTitle: dia ? 'Resumo do dia' : 'Resumo do mês',
+      rsEyebrow: dia ? (d.sel ? this.fmtIso(d.sel) : 'Sem partidas finalizadas') : (M.sel ? mLabel(M.sel) : 'Sem partidas finalizadas'),
+      rsCanShare: dia ? has : mHas,
+      rmShow: !dia, rmHasMonths: M.months.length > 1, rmHas: mHas, rmEmpty: !mHas,
+      rmMonths: M.months.map(k => chip(mLabel(k), k === M.sel, () => this.setState({ rsMonth: k }))),
+      rmScorerTitle: M.scorers.length > 1 ? '👑 Artilheiros do mês (empate)' : '👑 Artilheiro do mês',
+      rmAssistTitle: M.assists.length > 1 ? '⭐ Líderes de assistências (empate)' : '⭐ Líder de assistências do mês',
+      rmScorers: M.scorers.map(p => leader(p, M.maxG, 'gol')), rmHasScorer: M.scorers.length > 0, rmNoScorer: mHas && !M.scorers.length,
+      rmAssists: M.assists.map(p => leader(p, M.maxA, 'assistência')), rmHasAssist: M.assists.length > 0, rmNoAssist: mHas && !M.assists.length,
+      rmNums: [{ label: 'Partidas', v: M.hist.length }, { label: 'Rachas', v: M.days }, { label: 'Gols', v: M.gols }, { label: 'Assistências', v: M.ast }],
+      rmRows: M.rows,
+      rsDateLabel: d.sel ? this.fmtIso(d.sel) : 'Sem partidas finalizadas',
+      rsDates: d.dates.map(s => { const [y, m, dd] = s.split('-'); return chip(dd + '/' + m + '/' + y, s === d.sel, () => this.setState({ rsDate: s })); }),
+      rsHasDates: dia && d.dates.length > 1, rsHas: dia && has, rsEmpty: dia && !has,
+      rsTopTitle: d.top.length > 1 ? 'Equipes que mais venceram (empate)' : 'Equipe que mais venceu',
+      rsHasWinner: d.top.length > 0, rsNoWinner: dia && has && d.top.length === 0,
+      rsTop: d.top.map(t => ({ nome: 'Time ' + t.l, cor: this.teamInfo(t.l).cor, img: this.cssUrl(Component.SHIRTS[t.cor]), alt: 'Colete ' + t.cor, colete: 'Colete ' + t.cor, vit: t.v + (t.v === 1 ? ' vitória' : ' vitórias') })),
+      rsNums: [{ label: 'Partidas', v: d.day.length }, { label: 'Gols', v: d.gols }, { label: 'Tempo', v: Math.round(d.dur / 60000) + ' min' }],
+      rsRows: d.rows,
+      rsShare: () => !this.state.rsBusy && (dia ? this.shareResumo(list) : this.shareMonth(list)),
+      rsShareLabel: this.state.rsBusy ? 'Gerando imagem…' : 'Compartilhar no WhatsApp'
+    };
+  }
+  resumoMonthData(list) {
+    const H = this.state.hist.filter(x => x.date);
+    const months = [...new Set(H.map(x => this.dayKey(x).slice(0, 7)))].sort().reverse();
+    const sel = months.includes(this.state.rsMonth) ? this.state.rsMonth : (months[0] || null);
+    const mh = sel ? H.filter(x => this.dayKey(x).slice(0, 7) === sel) : [];
+    const S = this.careerStats(mh);
+    const ps = list.map(p => ({ p, s: S[p.id] })).filter(o => o.s);
+    const maxG = Math.max(0, ...ps.map(o => o.s.gols)), maxA = Math.max(0, ...ps.map(o => o.s.ast));
+    const byName = (a, b) => a.p.nome.localeCompare(b.p.nome);
+    const scorers = maxG > 0 ? ps.filter(o => o.s.gols === maxG).sort(byName).map(o => o.p) : [];
+    const assists = maxA > 0 ? ps.filter(o => o.s.ast === maxA).sort(byName).map(o => o.p) : [];
+    const rows = ps.filter(o => o.s.j || o.s.gols || o.s.ast).map(o => ({ nome: o.p.apelido || o.p.nome, j: o.s.j, v: o.s.v, gols: o.s.gols, ast: o.s.ast }))
+      .sort((a, b) => (b.gols - a.gols) || (b.ast - a.ast) || (b.v - a.v) || a.nome.localeCompare(b.nome));
+    return { months, sel, hist: mh, scorers, assists, maxG, maxA, rows, gols: mh.reduce((s, x) => s + (x.a || 0) + (x.b || 0), 0), ast: ps.reduce((s, o) => s + o.s.ast, 0), days: new Set(mh.map(x => this.dayKey(x))).size };
+  }
+  async shareCanvas(c, name, txt) {
+    const blob = await new Promise(res => c.toBlob(res, 'image/png'));
+    const file = new File([blob], name, { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file], text: txt }); } catch (e) {} return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    this.setState({ toast: 'Imagem salva. Envie pelo WhatsApp.' }); clearTimeout(this._tt); this._tt = setTimeout(() => this.setState({ toast: '' }), 3500);
+  }
+  drawCrown(x, cx, bottom, w) {
+    const s = w / 64, X = v => cx - w / 2 + v * s, Y = v => bottom - 40 * s + v * s;
+    x.save(); x.shadowColor = 'rgba(0,0,0,0.5)'; x.shadowBlur = 10; x.shadowOffsetY = 4;
+    x.beginPath(); [[4, 37], [7, 11], [21, 24], [32, 4], [43, 24], [57, 11], [60, 37]].forEach(([a, b], i) => i ? x.lineTo(X(a), Y(b)) : x.moveTo(X(a), Y(b))); x.closePath();
+    x.fillStyle = '#fbbf24'; x.fill(); x.shadowColor = 'transparent'; x.lineWidth = 2 * s; x.strokeStyle = '#92400e'; x.lineJoin = 'round'; x.stroke();
+    x.fillStyle = '#f59e0b'; x.fillRect(X(4), Y(32), 56 * s, 6 * s); x.strokeRect(X(4), Y(32), 56 * s, 6 * s);
+    [[7, 10], [32, 4], [57, 10]].forEach(([a, b]) => { x.beginPath(); x.arc(X(a), Y(b), 3.5 * s, 0, Math.PI * 2); x.fillStyle = '#fde68a'; x.fill(); x.stroke(); });
+    x.restore();
+  }
+  drawStar(x, cx, bottom, w) {
+    const s = w / 40, pts = [[20, 2], [25, 14], [38, 15], [28, 24], [31, 37], [20, 30], [9, 37], [12, 24], [2, 15], [15, 14]];
+    x.save(); x.shadowColor = 'rgba(0,0,0,0.5)'; x.shadowBlur = 10; x.shadowOffsetY = 4;
+    x.beginPath(); pts.forEach(([a, b], i) => { const X = cx - w / 2 + a * s, Y = bottom - 40 * s + b * s; i ? x.lineTo(X, Y) : x.moveTo(X, Y); }); x.closePath();
+    x.fillStyle = '#4ade80'; x.fill(); x.shadowColor = 'transparent'; x.lineWidth = 2 * s; x.strokeStyle = '#14532d'; x.lineJoin = 'round'; x.stroke(); x.restore();
+  }
+  async shareMonth(list) {
+    const M = this.resumoMonthData(list); if (!M.hist.length) return;
+    this.setState({ rsBusy: true });
+    try {
+      try { await Promise.all(["800 64px 'Barlow Condensed'", "700 30px 'Barlow Condensed'", "600 28px 'Barlow'"].map(f => document.fonts.load(f))); } catch (e) {}
+      const MN = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO'];
+      const [yy, mm] = M.sel.split('-');
+      const W = 1080, CD = "'Barlow Condensed', sans-serif", BR = "'Barlow', sans-serif";
+      const tileW = 280, tileH = 373, perRow = 3;
+      const secH = n => 110 + Math.max(1, Math.ceil(n / perRow)) * (tileH + 190);
+      const rows = M.rows.slice(0, 12);
+      const H = 300 + secH(M.scorers.length) + 30 + secH(M.assists.length) + 30 + 190 + 80 + rows.length * 60 + 110;
+      const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+      const rr = (X, Y, w, hh, r, fill, stroke) => { x.beginPath(); x.roundRect ? x.roundRect(X, Y, w, hh, r) : x.rect(X, Y, w, hh); if (fill) { x.fillStyle = fill; x.fill(); } if (stroke) { x.strokeStyle = stroke; x.lineWidth = 2; x.stroke(); } };
+      x.fillStyle = '#0f1412'; x.fillRect(0, 0, W, H);
+      const hl = document.querySelector('header img'), logo = hl ? await this.loadImg(hl.src) : null;
+      if (logo) { const lh = 100, lw = logo.width * lh / logo.height; x.drawImage(logo, 60, 40, Math.min(lw, 340), lh); }
+      x.fillStyle = '#ffffff'; x.font = '800 76px ' + CD; x.fillText('RESUMO DO MÊS', 60, 220);
+      x.fillStyle = '#4ade80'; x.font = '700 38px ' + CD; x.fillText(MN[+mm - 1] + ' ' + yy, 60, 268);
+      let y = 300;
+      const section = async (title, leaders, total, unit, bg, border, accent, glow, icon) => {
+        const sh = secH(leaders.length); rr(40, y, W - 80, sh, 28, bg, border);
+        x.fillStyle = accent; x.font = '700 32px ' + CD; x.fillText(title, 80, y + 64);
+        if (!leaders.length) { x.fillStyle = '#c8d3cd'; x.font = '600 30px ' + BR; x.fillText('Nenhum registro no mês.', 80, y + 170); }
+        const n = Math.min(perRow, leaders.length), gap = 40, rowW = n * tileW + (n - 1) * gap;
+        for (let i = 0; i < leaders.length; i++) {
+          const p = leaders[i], r = Math.floor(i / perRow), inRow = Math.min(perRow, leaders.length - r * perRow), rw = inRow * tileW + (inRow - 1) * gap;
+          const bx = (W - rw) / 2 + (i % perRow) * (tileW + gap), by = y + 190 + r * (tileH + 190);
+          x.save(); rr(bx, by, tileW, tileH, 24); x.clip();
+          const g = x.createRadialGradient(bx + tileW / 2, by + tileH * 0.3, 10, bx + tileW / 2, by + tileH * 0.3, tileH * 0.8); g.addColorStop(0, glow); g.addColorStop(1, bg); x.fillStyle = g; x.fillRect(bx, by, tileW, tileH);
+          const img = p.foto ? await this.loadImg(p.foto) : null;
+          if (img) { const s = Math.max(tileW / img.width, tileH / img.height), dw = img.width * s, dh = img.height * s; x.drawImage(img, bx + (tileW - dw) / 2, by, dw, dh); }
+          else { x.fillStyle = 'rgba(255,255,255,0.35)'; x.font = '800 110px ' + CD; x.textAlign = 'center'; x.fillText(this.initials(p.nome), bx + tileW / 2, by + tileH / 2 + 40); x.textAlign = 'left'; }
+          x.restore(); rr(bx, by, tileW, tileH, 24, null, border);
+          const iconBottom = by + (img && p.fotoFramed ? tileH * 0.15 : -6);
+          if (icon === 'crown') this.drawCrown(x, bx + tileW / 2, iconBottom, tileW * 0.46); else this.drawStar(x, bx + tileW / 2, iconBottom, tileW * 0.3);
+          x.textAlign = 'center'; x.fillStyle = '#ffffff'; x.font = '800 44px ' + CD;
+          let nm = (p.apelido || p.nome).toUpperCase(); while (x.measureText(nm).width > tileW + 30 && nm.length > 3) nm = nm.slice(0, -1);
+          x.fillText(nm, bx + tileW / 2, by + tileH + 58);
+          x.fillStyle = accent; x.font = '800 40px ' + CD; x.fillText(total + ' ' + unit + (total === 1 ? '' : 'S'), bx + tileW / 2, by + tileH + 108); x.textAlign = 'left';
+        }
+        y += sh + 30;
+      };
+      await section(M.scorers.length > 1 ? 'ARTILHEIROS DO MÊS' : 'ARTILHEIRO DO MÊS', M.scorers, M.maxG, 'GOL', '#1d1809', '#7a5a14', '#fcd34d', '#4a3a0c', 'crown');
+      await section(M.assists.length > 1 ? 'LÍDERES DE ASSISTÊNCIAS' : 'LÍDER DE ASSISTÊNCIAS', M.assists, M.maxA, 'ASSISTÊNCIA', '#0f231a', '#1f6b3c', '#86efac', '#14532d', 'star');
+      const nums = [['PARTIDAS', M.hist.length], ['RACHAS', M.days], ['GOLS', M.gols], ['ASSIST.', M.ast]];
+      nums.forEach((n, i) => { const w = (W - 80 - 60) / 4, bx = 40 + i * (w + 20); rr(bx, y, w, 150, 22, '#161d1a', '#223029'); x.fillStyle = '#a3b0aa'; x.font = '700 24px ' + CD; x.fillText(n[0], bx + 24, y + 50); x.fillStyle = '#ffffff'; x.font = '800 60px ' + CD; x.fillText(String(n[1]), bx + 24, y + 120); });
+      y += 190;
+      const cols = [['J', 700], ['V', 790], ['G', 880], ['A', 970]];
+      x.fillStyle = '#8fa39a'; x.font = '700 24px ' + CD; x.fillText('JOGADOR', 60, y + 30); cols.forEach(([t, cx]) => { x.textAlign = 'right'; x.fillText(t, cx + 30, y + 30); x.textAlign = 'left'; });
+      y += 80;
+      rows.forEach((r, i) => {
+        if (i % 2 === 0) rr(40, y - 42, W - 80, 56, 12, '#141b18');
+        x.fillStyle = '#ffffff'; x.font = '600 30px ' + BR; let nm = r.nome; while (x.measureText(nm).width > 580 && nm.length > 3) nm = nm.slice(0, -1); x.fillText(nm, 60, y);
+        [r.j, r.v, r.gols, r.ast].forEach((v, k) => { x.textAlign = 'right'; x.fillStyle = k === 2 ? '#fbbf24' : k === 3 ? '#4ade80' : '#c8d3cd'; x.font = (k >= 2 ? '800 ' : '600 ') + '32px ' + CD; x.fillText(String(v), cols[k][1] + 30, y); x.textAlign = 'left'; });
+        y += 60;
+      });
+      x.fillStyle = '#5f6e67'; x.font = '600 24px ' + BR; x.fillText('Super Racha · terças, 20h', 60, H - 50);
+      await this.shareCanvas(c, 'resumo-mensal-super-racha-' + M.sel + '.png', 'Resumo do mês · Super Racha');
+    } finally { this.setState({ rsBusy: false }); }
+  }
+  // ---------- recorte de foto
+  static SEG = null;
+  openCropSrc(src, revoke) {
+    this.loadImg(src).then(img => {
+      if (revoke) try { URL.revokeObjectURL(src); } catch (e) {}
+      if (!img) { this.setState({ toast: 'Não foi possível abrir a imagem.' }); return; }
+      const max = 1400, r = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas'); c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      this._crop = { src: c, cut: null, useCut: false, zoom: 1, ox: 0, oy: 0 };
+      const alpha = this.hasAlpha(c);
+      this.setState({ crop: { zoom: 100, msg: '', msgColor: '#a3b0aa', busy: false, hasCut: false, canFrame: alpha } }, () => { if (alpha) this.autoFrame(); else this.cropDraw(); });
+    });
+  }
+  hasAlpha(c) {
+    const s = 64, t = document.createElement('canvas'); t.width = s; t.height = s; const x = t.getContext('2d'); x.drawImage(c, 0, 0, s, s);
+    const d = x.getImageData(0, 0, s, s).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i] < 20) n++; return n > s * s * 0.05;
+  }
+  cropSource() { const k = this._crop; return k.useCut && k.cut ? k.cut : k.src; }
+  cropRender(ctx, W, H, preview) {
+    const k = this._crop, src = this.cropSource();
+    ctx.clearRect(0, 0, W, H);
+    if (preview) { for (let y = 0; y < H; y += 20) for (let x = 0; x < W; x += 20) { ctx.fillStyle = ((x + y) / 20) % 2 ? '#1c2621' : '#232e29'; ctx.fillRect(x, y, 20, 20); } }
+    const base = Math.max(W / src.width, H / src.height), s = base * k.zoom, dw = src.width * s, dh = src.height * s;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(src, (W - dw) / 2 + k.ox * W / 360, (H - dh) / 2 + k.oy * H / 480, dw, dh);
+    if (preview) {
+      ctx.save(); ctx.setLineDash([8, 6]); ctx.lineWidth = 2; ctx.strokeStyle = 'rgba(74,222,128,0.9)';
+      ctx.beginPath(); ctx.moveTo(0, H * 0.14); ctx.lineTo(W, H * 0.14); ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.beginPath(); ctx.ellipse(W / 2, H * 0.14 + W * 0.26, W * 0.2, W * 0.26, 0, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+    }
+  }
+  cropDraw() { const cv = this.cropRef.current; if (!cv || !this._crop) return; this.cropRender(cv.getContext('2d'), cv.width, cv.height, true); }
+  cropExport() { const c = document.createElement('canvas'); c.width = 360; c.height = 480; this.cropRender(c.getContext('2d'), 360, 480, false); return c; }
+  autoFrame() {
+    const k = this._crop, src = this.cropSource(), S = 256, r = S / Math.max(src.width, src.height);
+    const w = Math.max(1, Math.round(src.width * r)), hh = Math.max(1, Math.round(src.height * r));
+    const t = document.createElement('canvas'); t.width = w; t.height = hh; const tx = t.getContext('2d'); tx.drawImage(src, 0, 0, w, hh);
+    const d = tx.getImageData(0, 0, w, hh).data, A = (x, y) => d[(y * w + x) * 4 + 3] > 128;
+    let y0 = -1, y1 = -1, x0 = w, x1 = -1;
+    for (let y = 0; y < hh; y++) for (let x = 0; x < w; x++) if (A(x, y)) { if (y0 < 0) y0 = y; y1 = y; if (x < x0) x0 = x; if (x > x1) x1 = x; }
+    if (y0 < 0) { this.cropDraw(); return; }
+    const hy = Math.min(hh - 1, y0 + Math.max(2, Math.round((y1 - y0) * 0.12)));
+    let hl = w, hr = -1; for (let y = y0; y <= hy; y++) for (let x = 0; x < w; x++) if (A(x, y)) { if (x < hl) hl = x; if (x > hr) hr = x; }
+    let headW = (hr - hl + 1) / r, headCx = (hl + hr + 1) / 2 / r;
+    if (!(headW > 0) || headW < (x1 - x0 + 1) / r * 0.15) { headW = (x1 - x0 + 1) / r * 0.5; headCx = (x0 + x1 + 1) / 2 / r; }
+    const W = 360, H = 480, base = Math.max(W / src.width, H / src.height);
+    const s = Math.min(base * 4, Math.max(base * 0.3, (W * 0.42) / headW));
+    k.zoom = s / base;
+    k.ox = (W / 2 - headCx * s) - (W - src.width * s) / 2;
+    k.oy = (H * 0.14 - (y0 / r) * s) - (H - src.height * s) / 2;
+    this.setState(st => ({ crop: { ...st.crop, zoom: Math.round(k.zoom * 100), canFrame: true } }), () => this.cropDraw());
+  }
+  async removeBg() {
+    const k = this._crop; if (!k || this.state.crop.busy) return;
+    const setC = p => this.setState(st => ({ crop: { ...st.crop, ...p } }));
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) { setC({ msg: 'Sem internet: a remoção automática do fundo precisa baixar um modelo (cerca de 16 MB) na primeira vez. Ajuste o recorte manualmente ou envie um PNG já recortado.', msgColor: '#fde68a' }); return; }
+    setC({ busy: true, msg: 'Removendo fundo… (na primeira vez baixa o modelo, pode levar alguns segundos)', msgColor: '#a3b0aa' });
+    try {
+      const V = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';
+      if (!Component.SEG) {
+        const vision = await import(V + '/vision_bundle.mjs');
+        const files = await vision.FilesetResolver.forVisionTasks(V + '/wasm');
+        Component.SEG = await vision.ImageSegmenter.createFromOptions(files, {
+          baseOptions: { modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_multiclass_256x256/float32/latest/selfie_multiclass_256x256.tflite', delegate: 'CPU' },
+          runningMode: 'IMAGE', outputCategoryMask: false, outputConfidenceMasks: true
+        });
+      }
+      const src = k.src, mx = 1024, r = Math.min(1, mx / Math.max(src.width, src.height));
+      const c = document.createElement('canvas'); c.width = Math.round(src.width * r); c.height = Math.round(src.height * r);
+      const cx = c.getContext('2d'); cx.drawImage(src, 0, 0, c.width, c.height);
+      const res = Component.SEG.segment(c);
+      const mask = res.confidenceMasks[0], mw = mask.width, mh = mask.height, bg = mask.getAsFloat32Array();
+      const al = new Float32Array(mw * mh); for (let i = 0; i < al.length; i++) al[i] = Math.min(1, Math.max(0, ((1 - bg[i]) - 0.25) / 0.5));
+      try { res.close(); } catch (e) {}
+      const sm = new Float32Array(al.length);
+      for (let y = 0; y < mh; y++) for (let x = 0; x < mw; x++) { let s = 0, n = 0; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const X = x + dx, Y = y + dy; if (X < 0 || Y < 0 || X >= mw || Y >= mh) continue; s += al[Y * mw + X]; n++; } sm[y * mw + x] = s / n; }
+      const id = cx.getImageData(0, 0, c.width, c.height), dd = id.data;
+      for (let y = 0; y < c.height; y++) for (let x = 0; x < c.width; x++) { const mi = Math.min(mh - 1, Math.floor(y * mh / c.height)) * mw + Math.min(mw - 1, Math.floor(x * mw / c.width)); dd[(y * c.width + x) * 4 + 3] = Math.round(dd[(y * c.width + x) * 4 + 3] * sm[mi]); }
+      cx.putImageData(id, 0, 0);
+      k.cut = c; k.useCut = true;
+      setC({ busy: false, hasCut: true, msg: 'Fundo removido. Ajuste o enquadramento se precisar.', msgColor: '#86efac' });
+      this.autoFrame();
+    } catch (e) {
+      console.warn('Remoção de fundo falhou', e);
+      setC({ busy: false, msg: 'Não foi possível remover o fundo automaticamente neste aparelho (precisa de internet e de um navegador atualizado). Você pode ajustar o recorte manualmente ou enviar um PNG já recortado (por exemplo, feito no app de fotos do celular ou em um site de remoção de fundo).', msgColor: '#fde68a' });
+    }
+  }
+  cropSave() {
+    if (!this._crop) return;
+    const c = this.cropExport(); let url = c.toDataURL('image/webp', 0.9);
+    if (url.indexOf('data:image/webp') !== 0) url = c.toDataURL('image/png');
+    this.setForm({ foto: url, fotoFramed: true });
+    this._crop = null; this.setState({ crop: null });
+  }
+  cropVals() {
+    const cr = this.state.crop;
+    if (!cr) return { cropOpen: false };
+    return {
+      cropOpen: true, cropRef: this.cropRef, cropZoom: cr.zoom,
+      onCropZoom: e => { if (!this._crop) return; this._crop.zoom = Math.max(0.3, Number(e.target.value) / 100); this.setState(st => ({ crop: { ...st.crop, zoom: Number(e.target.value) } }), () => this.cropDraw()); },
+      cropDown: e => { if (!this._crop) return; try { e.currentTarget.setPointerCapture(e.pointerId); } catch (x) {} const r = e.currentTarget.getBoundingClientRect(); this._cd = { x: e.clientX, y: e.clientY, ox: this._crop.ox, oy: this._crop.oy, k: 360 / r.width }; },
+      cropMove: e => { const d = this._cd; if (!d || !this._crop) return; this._crop.ox = d.ox + (e.clientX - d.x) * d.k; this._crop.oy = d.oy + (e.clientY - d.y) * d.k; this.cropDraw(); },
+      cropUp: () => { this._cd = null; },
+      cropAuto: () => this.removeBg(), cropAutoLabel: cr.busy ? 'Removendo fundo…' : '✨ Remover fundo',
+      cropHasCut: !!cr.hasCut, cropToggleLabel: this._crop && this._crop.useCut ? 'Ver original' : 'Usar recorte',
+      cropToggle: () => { if (!this._crop) return; this._crop.useCut = !this._crop.useCut; this.forceUpdate(); this.cropDraw(); },
+      cropCanFrame: !!cr.canFrame || !!cr.hasCut, cropFrame: () => this.autoFrame(),
+      cropHasMsg: !!cr.msg, cropMsg: cr.msg || '', cropMsgColor: cr.msgColor || '#a3b0aa',
+      cropPng: e => { const f = e.target.files && e.target.files[0]; if (f) this.openCropSrc(URL.createObjectURL(f), true); e.target.value = ''; },
+      cropDownload: () => { if (!this._crop) return; this.cropExport().toBlob(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = ((this.state.form && this.state.form.nome) || 'jogador').replace(/[^\w-]+/g, '-') + '-recortado.png'; document.body.appendChild(a); a.click(); a.remove(); }, 'image/png'); },
+      cropCancel: () => { this._crop = null; this.setState({ crop: null }); },
+      cropSave: () => this.cropSave()
+    };
+  }
   cfgVals() {
     const cfg = this.state.cfg;
     const nCfg = Math.max(4, this.state.gen ? this.state.gen.k : 0);
@@ -2061,6 +2569,8 @@ class Component extends DCLogic {
       ...this.cfgVals(),
       ...this.cloudVals(),
       ...this.colVals(list),
+      ...this.resumoVals(list),
+      ...this.cropVals(),
       isNarrow: !!this.state.narrow, isWide: !this.state.narrow,
       stop: e => e.stopPropagation(),
       players: list, isEmpty: list.length === 0,
@@ -2073,7 +2583,8 @@ class Component extends DCLogic {
       formInitials: this.initials(form && form.nome),
       photoLabel: form && form.foto ? 'Trocar foto' : 'Enviar foto',
       onPhoto: e => this.onPhoto(e),
-      removePhoto: () => this.setForm({ foto: '' }),
+      removePhoto: () => this.setForm({ foto: '', fotoFramed: false }),
+      openCropCur: () => form && form.foto && this.openCropSrc(form.foto, false),
       onNome: e => this.setForm({ nome: e.target.value }),
       onApelido: e => this.setForm({ apelido: e.target.value }),
       onNumero: e => this.setForm({ numero: e.target.value.replace(/\D/g, '').slice(0, 3) }),
