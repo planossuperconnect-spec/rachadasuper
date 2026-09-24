@@ -27,5 +27,7 @@ Arquivo principal: `Racha dos Amigos.dc.html` (um único DC com todas as página
 - Ranking: real, derivado do histórico (V=3, E=1).
 - Resumo (aba 'resumo'): modo dia (Equipe que mais venceu, share PNG) e mensal (Artilheiro 👑 e Líder de assistências ⭐, empates mostram todos; share PNG). Derivado do histórico.
 - Foto do jogador: editor de recorte (canvas 360×480, guia do topo da cabeça a 14%); remoção de fundo via MediaPipe (CDN, só online); fallback PNG recortado. fotoFramed=true posiciona coroa dentro da folga acima da cabeça.
+- Biblioteca de fotos (aba Jogadores): 6 fotos embutidas (static LIB, webp com alpha, colete verde/preto) + fotos do usuário em `racha_fotos_v1` [{id:'u…', src}]. Jogador guarda fotoLib (id) + foto (recorte enquadrado 360×480). Associação manual, sem reconhecimento.
+- Selo Artilheiro do Mês: static SEAL (LZUmX05.jpeg). buildSeal() recorta a foto na área branca do escudo (flood fill), nome na faixa (559,1005) e gols (657,1160) em coords 1122×1402. Usado na tela mensal e no PNG de compartilhamento. Originais em _lib/.
 - Gol: autor obrigatório; "Sem assistência / anotar depois"; botão "+ 🅰 Assist." na timeline (partida e histórico).
 - Início: Próximo racha e Confirmados ainda demonstrativos; Partida atual e Placar ao vivo.
