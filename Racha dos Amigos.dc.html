@@ -521,25 +521,32 @@ input::placeholder{color:#5f6e67}
       </div>
       <button onClick="{{ colNew }}" style="display:flex;align-items:center;gap:8px;background:#22c55e;color:#0b120e;border:none;border-radius:10px;padding:12px 18px;min-height:44px;font-family:'Barlow',sans-serif;font-weight:700;font-size:15px;cursor:pointer" style-hover="background:#4ade80"><span style="font-size:20px;line-height:1;font-weight:600">+</span>{{ colNewLabel }}</button>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px">
-      <sc-for list="{{ colNow }}" as="c" hint-placeholder-count="2">
-        <section style="background:#161d1a;border:1px solid #223029;border-radius:16px;padding:18px;display:flex;gap:16px;align-items:center">
-          <div role="img" aria-label="{{ c.titulo }}" style="width:clamp(72px,20vw,96px);aspect-ratio:310/480;flex-shrink:0;background-image:{{ c.img }};background-size:contain;background-repeat:no-repeat;background-position:center;filter:drop-shadow(0 8px 12px rgba(0,0,0,0.5))"></div>
-          <div style="display:flex;flex-direction:column;gap:8px;min-width:0;flex:1">
-            <span style="color:#a3b0aa;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">{{ c.titulo }}</span>
-            <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(26px,6vw,32px);line-height:1.05;text-transform:uppercase;color:{{ c.nameColor }};overflow-wrap:anywhere">{{ c.nome }}</span>
-            <span style="display:inline-flex;align-self:flex-start;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:{{ c.stBg }};color:{{ c.stFg }}">{{ c.status }}</span>
-            <span style="color:#8fa39a;font-size:13px">{{ c.desde }}</span>
-            <div style="display:flex;gap:6px;flex-wrap:wrap">
-              <button onClick="{{ c.trocar }}" style="min-height:40px;padding:0 12px;border-radius:10px;border:1px solid #2f7a4f;background:none;color:#4ade80;font-family:'Barlow',sans-serif;font-weight:700;font-size:14px;cursor:pointer" style-hover="background:#163823">{{ c.trocarLabel }}</button>
-              <sc-if value="{{ c.canDev }}">
-                <button onClick="{{ c.toggleDev }}" style="min-height:40px;padding:0 12px;border-radius:10px;border:1px solid #2a3a32;background:none;color:#c8d3cd;font-family:'Barlow',sans-serif;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:#1f2925">{{ c.devLabel }}</button>
-              </sc-if>
-            </div>
-          </div>
-        </section>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
+      <sc-for list="{{ colStats }}" as="n" hint-placeholder-count="3">
+        <div style="background:#161d1a;border:1px solid #223029;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:4px"><span style="color:#a3b0aa;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;font-size:11px">{{ n.label }}</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(28px,6vw,40px);line-height:1;color:{{ n.color }}">{{ n.v }}</span></div>
       </sc-for>
     </div>
+    <section style="background:#161d1a;border:1px solid #223029;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="color:#a3b0aa;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Estão com colete agora</span>
+        <sc-if value="{{ colHasHolders }}" hint-placeholder-val="{{ false }}"><button onClick="{{ colAllBack }}" style="min-height:40px;padding:0 12px;border-radius:10px;border:1px solid {{ colAllBackBorder }};background:{{ colAllBackBg }};color:{{ colAllBackFg }};font-family:'Barlow',sans-serif;font-weight:700;font-size:13px;cursor:pointer">{{ colAllBackLabel }}</button></sc-if>
+      </div>
+      <sc-if value="{{ colNoHolders }}" hint-placeholder-val="{{ true }}">
+        <span style="color:#8fa39a;font-size:15px">Nenhum colete pendente. Todos foram devolvidos ou ainda não há registro.</span>
+      </sc-if>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:8px">
+        <sc-for list="{{ colHolders }}" as="c" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:12px;padding:8px 10px 8px 12px;min-height:60px;border-radius:12px;border:1px solid #2a3a32;background:#0f1412">
+            <div role="img" aria-label="{{ c.corLabel }}" style="width:26px;aspect-ratio:310/480;flex-shrink:0;background-image:{{ c.img }};background-size:contain;background-repeat:no-repeat;background-position:center"></div>
+            <div style="display:flex;flex-direction:column;min-width:0;flex:1">
+              <span style="font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.nome }}</span>
+              <span style="font-size:12px;color:#8fa39a">{{ c.desde }}</span>
+            </div>
+            <button onClick="{{ c.back }}" style="min-height:40px;padding:0 10px;border-radius:8px;border:1px solid #2f7a4f;background:none;color:#4ade80;font-family:'Barlow',sans-serif;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap">Devolveu</button>
+          </div>
+        </sc-for>
+      </div>
+    </section>
     <div style="display:flex;flex-direction:column;gap:10px">
       <span style="color:#a3b0aa;font-size:13px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Registro por racha</span>
       <sc-if value="{{ colEmpty }}" hint-placeholder-val="{{ false }}">
@@ -547,18 +554,22 @@ input::placeholder{color:#5f6e67}
       </sc-if>
       <sc-for list="{{ colRows }}" as="r" hint-placeholder-count="3">
         <section style="background:#161d1a;border:1px solid #223029;border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-            <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase">{{ r.data }}</span>
-            <button onClick="{{ r.del }}" aria-label="Excluir registro" style="min-height:36px;min-width:36px;padding:0 10px;border-radius:8px;border:none;font-family:'Barlow',sans-serif;cursor:pointer;background:{{ r.delBg }};color:{{ r.delFg }};font-size:13px;font-weight:700">{{ r.delLabel }}</button>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+            <div style="display:flex;flex-direction:column;gap:2px;min-width:0">
+              <span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase">{{ r.data }}</span>
+              <span style="font-size:13px;color:#8fa39a">{{ r.resumo }}</span>
+            </div>
+            <div style="display:flex;gap:6px">
+              <button onClick="{{ r.edit }}" style="min-height:40px;padding:0 12px;border-radius:10px;border:none;background:#22c55e;color:#0b120e;font-family:'Barlow',sans-serif;font-weight:700;font-size:14px;cursor:pointer">Selecionar jogadores</button>
+              <button onClick="{{ r.del }}" aria-label="Excluir registro" style="min-height:40px;min-width:40px;padding:0 10px;border-radius:8px;border:none;font-family:'Barlow',sans-serif;cursor:pointer;background:{{ r.delBg }};color:{{ r.delFg }};font-size:13px;font-weight:700">{{ r.delLabel }}</button>
+            </div>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:8px">
-            <sc-for list="{{ r.itens }}" as="c" hint-placeholder-count="2">
-              <button onClick="{{ c.pick }}" style="display:flex;align-items:center;gap:12px;padding:8px 12px;min-height:60px;border-radius:12px;border:1px solid #2a3a32;background:#0f1412;color:#eef2ef;font-family:'Barlow',sans-serif;text-align:left;cursor:pointer" style-hover="border-color:#2f7a4f">
-                <div role="img" aria-label="Colete" style="width:28px;aspect-ratio:310/480;flex-shrink:0;background-image:{{ c.img }};background-size:contain;background-repeat:no-repeat;background-position:center"></div>
-                <div style="display:flex;flex-direction:column;min-width:0;flex:1">
-                  <span style="font-size:12px;color:#8fa39a;font-weight:600;text-transform:uppercase;letter-spacing:0.08em">{{ c.titulo }}</span>
-                  <span style="font-weight:700;font-size:16px;color:{{ c.nameColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.nome }}</span>
-                </div>
+          <sc-if value="{{ r.vazio }}"><span style="color:#6b7a73;font-size:14px">Ninguém selecionado neste racha.</span></sc-if>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:6px">
+            <sc-for list="{{ r.itens }}" as="c" hint-placeholder-count="4">
+              <button onClick="{{ c.toggle }}" title="Toque para marcar devolvido" style="display:flex;align-items:center;gap:10px;padding:6px 10px;min-height:48px;border-radius:10px;border:1px solid #2a3a32;background:#0f1412;color:#eef2ef;font-family:'Barlow',sans-serif;text-align:left;cursor:pointer;opacity:{{ c.op }}" style-hover="border-color:#2f7a4f">
+                <div role="img" aria-label="{{ c.corLabel }}" style="width:20px;aspect-ratio:310/480;flex-shrink:0;background-image:{{ c.img }};background-size:contain;background-repeat:no-repeat;background-position:center"></div>
+                <span style="font-weight:600;font-size:15px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.nome }}</span>
                 <span style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:{{ c.stFg }};white-space:nowrap">{{ c.status }}</span>
               </button>
             </sc-for>
@@ -863,12 +874,36 @@ input::placeholder{color:#5f6e67}
           </div>
           <button onClick="{{ colClose }}" aria-label="Fechar" style="width:44px;height:44px;border-radius:10px;border:none;background:#1f2925;color:#a3b0aa;font-size:22px;line-height:1;cursor:pointer;flex-shrink:0">×</button>
         </div>
-        <input value="{{ colSearch }}" onChange="{{ onColSearch }}" placeholder="Buscar jogador" style="min-height:48px;padding:0 14px;border-radius:10px;border:1px solid #2a3a32;background:#0f1412;color:#eef2ef;font-family:'Barlow',sans-serif;font-size:16px;outline:none" style-focus="border-color:#22c55e">
-        <div style="display:flex;flex-wrap:wrap;gap:6px">
-          <sc-for list="{{ colPickOpts }}" as="c" hint-placeholder-count="8">
-            <button onClick="{{ c.pick }}" style="min-height:44px;padding:0 14px;border-radius:999px;border:none;font-family:'Barlow',sans-serif;cursor:pointer;background:{{ c.bg }};color:{{ c.fg }};border:1px solid {{ c.border }};font-weight:600;font-size:15px">{{ c.label }}</button>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="color:#a3b0aa;font-size:13px;font-weight:600">Colete padrão:</span>
+          <sc-for list="{{ colDefOpts }}" as="o" hint-placeholder-count="2">
+            <button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:999px;border:1px solid {{ o.border }};background:{{ o.bg }};color:{{ o.fg }};font-family:'Barlow',sans-serif;font-weight:700;font-size:14px;cursor:pointer">{{ o.label }}</button>
           </sc-for>
         </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button onClick="{{ colSelConf }}" style="min-height:44px;padding:0 14px;border-radius:10px;border:1px solid #2f7a4f;background:none;color:#4ade80;font-family:'Barlow',sans-serif;font-weight:700;font-size:14px;cursor:pointer">✓ Todos os confirmados ({{ colConfN }})</button>
+          <button onClick="{{ colSelNone }}" style="min-height:44px;padding:0 14px;border-radius:10px;border:1px solid #2a3a32;background:none;color:#c8d3cd;font-family:'Barlow',sans-serif;font-weight:600;font-size:14px;cursor:pointer">Limpar</button>
+        </div>
+        <input value="{{ colSearch }}" onChange="{{ onColSearch }}" placeholder="Buscar jogador" style="min-height:48px;padding:0 14px;border-radius:10px;border:1px solid #2a3a32;background:#0f1412;color:#eef2ef;font-family:'Barlow',sans-serif;font-size:16px;outline:none" style-focus="border-color:#22c55e">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <sc-for list="{{ colPickRows }}" as="c" hint-placeholder-count="8">
+            <div style="display:flex;align-items:center;gap:8px;padding:4px 6px 4px 4px;border-radius:12px;border:1px solid {{ c.border }};background:{{ c.bg }}">
+              <button onClick="{{ c.toggle }}" style="flex:1;min-width:0;display:flex;align-items:center;gap:12px;min-height:48px;padding:0 8px;border:none;background:none;color:#eef2ef;font-family:'Barlow',sans-serif;text-align:left;cursor:pointer">
+                <span style="width:24px;height:24px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;border:2px solid {{ c.boxBorder }};background:{{ c.boxBg }};color:#0b120e">{{ c.mark }}</span>
+                <span style="display:flex;flex-direction:column;min-width:0">
+                  <span style="font-weight:700;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ c.nome }}</span>
+                  <span style="font-size:12px;color:{{ c.tagFg }}">{{ c.tag }}</span>
+                </span>
+              </button>
+              <sc-if value="{{ c.on }}">
+                <button onClick="{{ c.swap }}" aria-label="Trocar cor do colete" style="display:flex;align-items:center;gap:6px;min-height:44px;padding:0 10px;border-radius:10px;border:1px solid #2a3a32;background:#0f1412;color:#eef2ef;font-family:'Barlow',sans-serif;font-weight:700;font-size:13px;cursor:pointer;flex-shrink:0">
+                  <div role="img" aria-label="{{ c.corLabel }}" style="width:18px;aspect-ratio:310/480;flex-shrink:0;background-image:{{ c.img }};background-size:contain;background-repeat:no-repeat;background-position:center"></div>{{ c.corLabel }}
+                </button>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <button onClick="{{ colClose }}" style="position:sticky;bottom:0;min-height:48px;border-radius:12px;border:none;background:#22c55e;color:#0b120e;font-family:'Barlow',sans-serif;font-weight:800;font-size:16px;cursor:pointer;box-shadow:0 -8px 20px #161d1a">{{ colDoneLabel }}</button>
       </div>
     </div>
   </sc-if>
@@ -2186,64 +2221,92 @@ class Component extends DCLogic {
     const last = C.reduce((m, r) => r.date > m ? r.date : m, cur).split('-').map(Number);
     return this.isoDate(new Date(last[0], last[1] - 1, last[2] + 7, 12));
   }
+  colItems(r) {
+    if (Array.isArray(r.com)) return r.com;
+    const out = [];
+    ['verde', 'preto'].forEach(cor => { if (r[cor] != null) out.push({ pid: r[cor], cor, dev: !!(r.dev && r.dev[cor]) }); });
+    return out;
+  }
+  colSetItems(recId, items, extra) {
+    const C = this.state.coletes, r = C.find(x => x.id === recId);
+    if (!r) return;
+    const { verde, preto, dev, ...rest } = r;
+    this.saveCol(C.map(x => x.id === recId ? { ...rest, com: items } : x), extra);
+  }
   colVals(list) {
-    const C = this.state.coletes, cores = [['verde', 'Colete verde'], ['preto', 'Colete preto']];
-    const who = id => { const p = id != null && list.find(x => x.id === id); return p ? (p.apelido || p.nome) : null; };
-    const itemOf = (r, cor, titulo) => {
-      const nome = who(r[cor]), dev = !!(r.dev && r.dev[cor]);
-      return { titulo, img: this.cssUrl(Component.SHIRTS[cor]), nome: nome || 'Não definido', nameColor: nome ? '#eef2ef' : '#6b7a73', status: !nome ? '' : dev ? 'Devolvido' : 'Com o jogador', stFg: dev ? '#8fa39a' : '#4ade80', pick: () => this.setState({ colPick: { recId: r.id, cor }, colSearch: '' }) };
-    };
-    const colNow = cores.map(([cor, titulo]) => {
-      const r = C.find(x => x[cor] != null);
-      const img = this.cssUrl(Component.SHIRTS[cor]);
-      if (!r) return { titulo, img, nome: 'Ninguém registrado', nameColor: '#6b7a73', status: 'Sem registro', stBg: '#1f2925', stFg: '#a3b0aa', desde: '', canDev: false, trocarLabel: 'Definir responsável', trocar: () => this.colOpenCurrent(cor), toggleDev: () => {}, devLabel: '' };
-      const dev = !!(r.dev && r.dev[cor]);
-      return {
-        titulo, img, nome: who(r[cor]) || 'Jogador removido', nameColor: '#eef2ef',
-        status: dev ? 'Devolvido' : 'Está com ele', stBg: dev ? '#1f2925' : '#163823', stFg: dev ? '#a3b0aa' : '#4ade80',
-        desde: 'Racha de ' + this.fmtIso(r.date), canDev: true, devLabel: dev ? 'Desfazer devolução' : 'Marcar devolvido',
-        trocarLabel: 'Trocar responsável', trocar: () => this.colOpenCurrent(cor),
-        toggleDev: () => this.saveCol(C.map(x => x.id === r.id ? { ...x, dev: { ...(x.dev || {}), [cor]: !dev } } : x))
-      };
-    });
+    const C = this.state.coletes, conf = this.state.presenca || [];
+    const P = id => list.find(x => x.id === id);
+    const nm = id => { const p = P(id); return p ? (p.apelido || p.nome) : 'Jogador removido'; };
+    const shirt = cor => this.cssUrl(Component.SHIRTS[cor === 'preto' ? 'preto' : 'verde']);
+    const corLabel = cor => cor === 'preto' ? 'Preto' : 'Verde';
+    // latest record per player decides if he is holding
+    const holders = [], seen = new Set();
+    C.forEach(r => this.colItems(r).forEach(it => { if (seen.has(it.pid)) return; seen.add(it.pid); if (!it.dev) holders.push({ it, r }); }));
+    holders.sort((x, y) => nm(x.it.pid).localeCompare(nm(y.it.pid)));
+    const cur = C.find(r => r.date === this.rachaDate());
+    const curIds = new Set(cur ? this.colItems(cur).map(i => i.pid) : []);
+    const holderIds = new Set(holders.map(h => h.it.pid));
+    const semColete = conf.filter(id => P(id) && !holderIds.has(id)).length;
+    const setDev = (r, pid, dev) => this.colSetItems(r.id, this.colItems(r).map(i => i.pid === pid ? { ...i, dev } : i));
+    const askAll = !!this.state.colAllAsk;
+    const colHolders = holders.map(({ it, r }) => ({ nome: nm(it.pid), img: shirt(it.cor), corLabel: 'Colete ' + corLabel(it.cor).toLowerCase(), desde: 'Colete ' + corLabel(it.cor).toLowerCase() + ' · desde ' + this.fmtIso(r.date), back: () => setDev(r, it.pid, true) }));
     const colRows = C.map(r => {
-      const asking = this.state.colDelAsk === r.id;
+      const asking = this.state.colDelAsk === r.id, items = this.colItems(r);
+      const nv = items.filter(i => i.cor !== 'preto').length, np = items.length - nv, nd = items.filter(i => i.dev).length;
       return {
-        data: this.fmtIso(r.date), itens: cores.map(([cor, t]) => ({ ...itemOf(r, cor, t), img: this.cssUrl(Component.SHIRTS[cor]) })),
+        data: this.fmtIso(r.date), vazio: !items.length,
+        resumo: items.length ? items.length + (items.length === 1 ? ' colete' : ' coletes') + ' · ' + nv + ' verde · ' + np + ' preto · ' + nd + ' devolvido' + (nd === 1 ? '' : 's') : 'Sem jogadores',
+        itens: items.map(i => ({ nome: nm(i.pid), img: shirt(i.cor), corLabel: 'Colete ' + corLabel(i.cor).toLowerCase(), status: i.dev ? 'Devolvido' : 'Com ele', stFg: i.dev ? '#8fa39a' : '#4ade80', op: i.dev ? 0.6 : 1, toggle: () => setDev(r, i.pid, !i.dev) }))
+          .sort((x, y) => x.nome.localeCompare(y.nome)),
+        edit: () => this.setState({ colPick: { recId: r.id }, colSearch: '' }),
         delLabel: asking ? 'Excluir?' : '🗑', delBg: asking ? '#dc4a4a' : '#1f2925', delFg: asking ? '#ffffff' : '#c8d3cd',
         del: () => asking ? this.saveCol(C.filter(x => x.id !== r.id), { colDelAsk: null }) : this.setState({ colDelAsk: r.id })
       };
     });
     const cp = this.state.colPick, rec = cp && C.find(x => x.id === cp.recId);
     let pickVals = { colPickOpen: false };
-    if (cp) {
-      const q = this.norm(this.state.colSearch), conf = this.state.presenca;
-      const cur = rec ? rec[cp.cor] : null;
-      const chip = (label, on, pick) => ({ label, pick, bg: on ? '#22c55e' : '#0f1412', fg: on ? '#0b120e' : '#eef2ef', border: on ? '#22c55e' : '#2a3a32' });
-      const setWho = id => {
-        const base = rec || { id: cp.recId, date: cp.date, verde: null, preto: null, dev: {} };
-        const upd = { ...base, [cp.cor]: id, dev: { ...(base.dev || {}), [cp.cor]: false } };
-        this.saveCol(rec ? C.map(x => x.id === upd.id ? upd : x) : [...C, upd], { colPick: null });
-      };
+    if (rec) {
+      const q = this.norm(this.state.colSearch), items = this.colItems(rec), map = new Map(items.map(i => [i.pid, i]));
+      const def = this.state.colDef === 'preto' ? 'preto' : 'verde';
+      const put = next => this.colSetItems(rec.id, next);
       const ps = list.filter(p => !q || this.norm(p.nome + ' ' + (p.apelido || '')).includes(q))
         .sort((a, b) => (conf.includes(b.id) - conf.includes(a.id)) || a.nome.localeCompare(b.nome));
+      const confIds = conf.filter(id => P(id));
       pickVals = {
-        colPickOpen: true, colPickTitle: cp.cor === 'verde' ? 'Colete verde' : 'Colete preto', colPickImg: this.cssUrl(Component.SHIRTS[cp.cor]),
-        colPickDate: 'Quem vai levar · ' + this.fmtIso(rec ? rec.date : cp.date),
-        colPickOpts: [chip('Ninguém', cur == null, () => setWho(null))].concat(ps.map(p => chip(p.apelido || p.nome, cur === p.id, () => setWho(p.id))))
+        colPickOpen: true, colPickTitle: 'Quem levou colete', colPickImg: shirt(def),
+        colPickDate: 'Racha de ' + this.fmtIso(rec.date) + ' · ' + items.length + ' selecionado' + (items.length === 1 ? '' : 's'),
+        colDefOpts: ['verde', 'preto'].map(c => ({ label: corLabel(c), pick: () => this.setState({ colDef: c }), bg: def === c ? (c === 'preto' ? '#0b0f0d' : '#22c55e') : '#0f1412', fg: def === c && c === 'verde' ? '#0b120e' : '#eef2ef', border: def === c ? '#4ade80' : '#2a3a32' })),
+        colConfN: confIds.length,
+        colSelConf: () => put(items.concat(confIds.filter(id => !map.has(id)).map(pid => ({ pid, cor: def, dev: false })))),
+        colSelNone: () => put([]),
+        colPickRows: ps.map(p => {
+          const it = map.get(p.id), on = !!it, isConf = conf.includes(p.id);
+          return {
+            nome: p.apelido || p.nome, on, mark: on ? '✓' : '',
+            tag: isConf ? 'Confirmado no racha' : 'Não confirmado', tagFg: isConf ? '#86efac' : '#6b7a73',
+            border: on ? '#1f6b3c' : '#223029', bg: on ? '#12301f' : '#0f1412', boxBorder: on ? '#22c55e' : '#4b5a53', boxBg: on ? '#22c55e' : 'transparent',
+            img: shirt(it ? it.cor : def), corLabel: it ? corLabel(it.cor) : '',
+            toggle: () => put(on ? items.filter(i => i.pid !== p.id) : items.concat([{ pid: p.id, cor: def, dev: false }])),
+            swap: () => put(items.map(i => i.pid === p.id ? { ...i, cor: i.cor === 'preto' ? 'verde' : 'preto' } : i))
+          };
+        }),
+        colDoneLabel: 'Concluir · ' + items.length + (items.length === 1 ? ' colete' : ' coletes')
       };
     }
     return {
-      ...pickVals, colNow, colRows, colEmpty: C.length === 0,
-      colNewLabel: C.some(r => r.date === this.rachaDate()) ? 'Novo racha' : 'Registrar racha de hoje',
-      colNew: () => { const date = this.colNextDate(); this.saveCol([...C, { id: this.uid(), date, verde: null, preto: null, dev: {} }]); },
+      ...pickVals, colRows, colEmpty: C.length === 0,
+      colStats: [{ label: 'Com colete', v: holders.length, color: '#4ade80' }, { label: 'Confirmados sem colete', v: semColete, color: '#eef2ef' }, { label: 'Rachas registrados', v: C.length, color: '#eef2ef' }],
+      colHolders, colHasHolders: holders.length > 0, colNoHolders: holders.length === 0,
+      colAllBackLabel: askAll ? 'Confirmar: todos devolveram' : 'Todos devolveram', colAllBackBg: askAll ? '#dc4a4a' : 'none', colAllBackFg: askAll ? '#ffffff' : '#c8d3cd', colAllBackBorder: askAll ? '#dc4a4a' : '#2a3a32',
+      colAllBack: () => {
+        if (!askAll) { this.setState({ colAllAsk: true }); clearTimeout(this._caT); this._caT = setTimeout(() => this.setState({ colAllAsk: false }), 4000); return; }
+        this.saveCol(C.map(r => { const { verde, preto, dev, ...rest } = r; return { ...rest, com: this.colItems(r).map(i => ({ ...i, dev: true })) }; }), { colAllAsk: false });
+      },
+      colNewLabel: cur ? 'Novo racha' : 'Registrar racha de hoje',
+      colNew: () => { const date = this.colNextDate(), id = this.uid(); this.saveCol([...C, { id, date, com: [] }], { colPick: { recId: id }, colSearch: '' }); },
       colClose: () => this.setState({ colPick: null }),
       colSearch: this.state.colSearch, onColSearch: e => this.setState({ colSearch: e.target.value })
     };
-  }
-  colOpenCurrent(cor) {
-    const date = this.rachaDate(), r = this.state.coletes.find(x => x.date === date);
-    this.setState({ colPick: { recId: r ? r.id : this.uid(), cor, date }, colSearch: '' });
   }
   // ---------- resumo do dia
   dayKey(x) { return x.date ? this.isoDate(new Date(x.date)) : null; }

@@ -14,7 +14,7 @@ Arquivo principal: `Racha dos Amigos.dc.html` (um único DC com todas as página
 
 ## Estado atual (sem banco de dados, tudo em localStorage)
 - Navegação: Início, Jogadores, Presença, Times, ⚽ Partida, Coletes, Histórico, Ranking, Configurações (key `racha_pagina`).
-- Coletes (`racha_coletes_v1`): [{id, date YYYY-MM-DD (terça), verde: pid, preto: pid, dev:{verde,preto}}]. Mostra com quem está agora + registro por racha.
+- Coletes (`racha_coletes_v1`): [{id, date YYYY-MM-DD (terça), com:[{pid, cor verde|preto, dev bool}]}] — vários coletes, 1 por participante. Registros antigos {verde,preto,dev} convertidos por colItems(). "Com colete agora" = registro mais recente de cada jogador sem dev. Seleção múltipla com "Todos os confirmados" (presença).
 - Celular (<640px): campo da Partida vira vertical (time 1 em cima, time 2 embaixo); state.narrow.
 - Jogadores (`racha_jogadores_v2`): nome, apelido, foto, número, capitão, posição (goleiro/linha), setor (auto/defesa/meio/ataque), nota 1–10 passo 0,5 (sincroniza habilidade), status. Estatísticas NÃO são armazenadas no jogador: derivadas do histórico (careerStats).
 - Presença (`racha_presenca_v1`): importação WhatsApp.
